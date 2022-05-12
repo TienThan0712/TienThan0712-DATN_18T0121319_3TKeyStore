@@ -123,7 +123,8 @@
 										class="card-img-top anh" src="/${s.getAnhSP()}" alt="">
 										<div class="card-body noidungsp mt-3">
 											<h6 class="card-title ten">${s.getTenSP()}</h6>
-											<small class="thuonghieu text-muted">${s.getTenLoai()}</small>
+											<small class="thuonghieu text-muted">Thương hiệu: ${s.getTenLoai()}</small>
+											<small class="thuonghieu text-muted">Loại Switch: ${s.getTenSwitch()}</small>
 											<div class="gia d-flex align-items-baseline">
 												<div class="giamoi">
 													<fmt:formatNumber type="NUMBER" value="${s.getGiaSale()}" />

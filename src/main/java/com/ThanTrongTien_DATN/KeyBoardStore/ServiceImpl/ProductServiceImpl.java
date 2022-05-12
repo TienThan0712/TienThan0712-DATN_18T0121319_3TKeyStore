@@ -2,6 +2,7 @@ package com.ThanTrongTien_DATN.KeyBoardStore.ServiceImpl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -31,7 +32,8 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 	@Override
 	@Cacheable(value = "products")
 	public List<ProductModel> getsp() {
-		String sql = "select MaSP, AnhSP, TenSP, DonGia, GiamGia, sp.MaLoai, TenLoai,NgayThem,MoTa from SanPham as sp inner join LoaiSP as lsp on sp.MaLoai = lsp.MaLoai ";
+		String sql = "select MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n"
+				+ "from SanPham as sp inner join LoaiSP as l on sp.MaLoai = l.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch";
 		List<ProductModel> ds = jdbcTemplate.query(sql, new RowMapper<ProductModel>() {
 			@Override
 			public ProductModel mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -47,18 +49,23 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 				sp.setGiaSale(giasale);
 				sp.setMaLoai(rs.getString("MaLoai"));
 				sp.setTenLoai(rs.getString("TenLoai"));
+				sp.setMaSwitch(rs.getString("MaSwitch"));
+				sp.setTenSwitch(rs.getString("TenSwitch"));
 				sp.setNgayThem(rs.getDate("NgayThem"));
 				sp.setMoTa(rs.getString("MoTa"));
 				return sp;
 			}
 		});
+		System.out.print("lay ds \n");
+		Collections.shuffle(ds);
 		return ds;
 	}
 
 	@Override
 	@Cacheable(value = "productsNew")
 	public List<ProductModel> getspmoi() {
-		String sql = "select top(12) MaSP, AnhSP, TenSP, DonGia, GiamGia, sp.MaLoai, TenLoai,NgayThem,MoTa from SanPham as sp inner join LoaiSP as lsp on sp.MaLoai = lsp.MaLoai order by NgayThem desc";
+		String sql = "select top(12) MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n"
+				+ "from SanPham as sp inner join LoaiSP as l on sp.MaLoai = l.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch order by NgayThem desc";
 		List<ProductModel> ds = jdbcTemplate.query(sql, new RowMapper<ProductModel>() {
 			@Override
 			public ProductModel mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -74,6 +81,8 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 				sp.setGiaSale(giasale);
 				sp.setMaLoai(rs.getString("MaLoai"));
 				sp.setTenLoai(rs.getString("TenLoai"));
+				sp.setMaSwitch(rs.getString("MaSwitch"));
+				sp.setTenSwitch(rs.getString("TenSwitch"));
 				sp.setNgayThem(rs.getDate("NgayThem"));
 				sp.setMoTa(rs.getString("MoTa"));
 				return sp;
@@ -84,7 +93,8 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 
 	@Override
 	public List<ProductModel> get8spmoi() {
-		String sql = "select top(8) MaSP, AnhSP, TenSP, DonGia, GiamGia, sp.MaLoai, TenLoai,NgayThem,MoTa from SanPham as sp inner join LoaiSP as lsp on sp.MaLoai = lsp.MaLoai order by NgayThem desc";
+		String sql = "select top(8) MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n "
+				+ "from SanPham as sp inner join LoaiSP as l on sp.MaLoai = l.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch order by NgayThem desc";
 		List<ProductModel> ds = jdbcTemplate.query(sql, new RowMapper<ProductModel>() {
 			@Override
 			public ProductModel mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -100,6 +110,8 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 				sp.setGiaSale(giasale);
 				sp.setMaLoai(rs.getString("MaLoai"));
 				sp.setTenLoai(rs.getString("TenLoai"));
+				sp.setMaSwitch(rs.getString("MaSwitch"));
+				sp.setTenSwitch(rs.getString("TenSwitch"));
 				sp.setNgayThem(rs.getDate("NgayThem"));
 				sp.setMoTa(rs.getString("MoTa"));
 				return sp;
@@ -111,7 +123,8 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 	@Override
 	@Cacheable(value = "productsHot")
 	public List<ProductModel> getsphot() {
-		String sql = "select top(12)MaSP, AnhSP, TenSP, DonGia, GiamGia, sp.MaLoai, TenLoai,NgayThem,MoTa from SanPham as sp inner join LoaiSP as lsp on sp.MaLoai = lsp.MaLoai where GiamGia=25";
+		String sql = "select top(12) MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n"
+				+ "from SanPham as sp inner join LoaiSP as l on sp.MaLoai = l.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch where GiamGia=25";
 		List<ProductModel> ds = jdbcTemplate.query(sql, new RowMapper<ProductModel>() {
 			@Override
 			public ProductModel mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -127,6 +140,8 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 				sp.setGiaSale(giasale);
 				sp.setMaLoai(rs.getString("MaLoai"));
 				sp.setTenLoai(rs.getString("TenLoai"));
+				sp.setMaSwitch(rs.getString("MaSwitch"));
+				sp.setTenSwitch(rs.getString("TenSwitch"));
 				sp.setNgayThem(rs.getDate("NgayThem"));
 				sp.setMoTa(rs.getString("MoTa"));
 				return sp;
@@ -137,7 +152,8 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 
 	@Override
 	public List<ProductModel> get8sphot() {
-		String sql = "select top(8) MaSP, AnhSP, TenSP, DonGia, GiamGia, sp.MaLoai, TenLoai,NgayThem,MoTa from SanPham as sp inner join LoaiSP as lsp on sp.MaLoai = lsp.MaLoai where GiamGia=25";
+		String sql = "select top(8) MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n "
+				+ "from SanPham as sp inner join LoaiSP as l on sp.MaLoai = l.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch where GiamGia=25";
 		List<ProductModel> ds = jdbcTemplate.query(sql, new RowMapper<ProductModel>() {
 			@Override
 			public ProductModel mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -153,6 +169,8 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 				sp.setGiaSale(giasale);
 				sp.setMaLoai(rs.getString("MaLoai"));
 				sp.setTenLoai(rs.getString("TenLoai"));
+				sp.setMaSwitch(rs.getString("MaSwitch"));
+				sp.setTenSwitch(rs.getString("TenSwitch"));
 				sp.setNgayThem(rs.getDate("NgayThem"));
 				sp.setMoTa(rs.getString("MoTa"));
 				return sp;
@@ -164,7 +182,8 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 	@Override
 	@Cacheable(value = "productsCategory")
 	public List<ProductModel> getCategory(String MaLoai) {
-		String sql = "select MaSP, AnhSP, TenSP, DonGia, GiamGia, sp.MaLoai, TenLoai,NgayThem,MoTa from SanPham as sp inner join LoaiSP as lsp on sp.MaLoai = lsp.MaLoai where sp.MaLoai='"+MaLoai+"'";
+		String sql = "select MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n "
+				+ "from SanPham as sp inner join LoaiSP as l on sp.MaLoai = l.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch where sp.MaLoai='"+MaLoai+"'";
 		List<ProductModel> ds = jdbcTemplate.query(sql, new RowMapper<ProductModel>() {
 			@Override
 			public ProductModel mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -180,6 +199,8 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 				sp.setGiaSale(giasale);
 				sp.setMaLoai(rs.getString("MaLoai"));
 				sp.setTenLoai(rs.getString("TenLoai"));
+				sp.setMaSwitch(rs.getString("MaSwitch"));
+				sp.setTenSwitch(rs.getString("TenSwitch"));
 				sp.setNgayThem(rs.getDate("NgayThem"));
 				sp.setMoTa(rs.getString("MoTa"));
 				return sp;
@@ -190,7 +211,8 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 	
 	@Override
 	public List<ProductModel> get8Category(String MaLoai) {
-		String sql = "select top(8)MaSP, AnhSP, TenSP, DonGia, GiamGia, sp.MaLoai, TenLoai,NgayThem,MoTa from SanPham as sp inner join LoaiSP as lsp on sp.MaLoai = lsp.MaLoai where sp.MaLoai='"+MaLoai+"'";
+		String sql = "select top(8) MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n "
+				+ "from SanPham as sp inner join LoaiSP as l on sp.MaLoai = l.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch where sp.MaLoai='"+MaLoai+"'";
 		List<ProductModel> ds = jdbcTemplate.query(sql, new RowMapper<ProductModel>() {
 			@Override
 			public ProductModel mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -206,6 +228,8 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 				sp.setGiaSale(giasale);
 				sp.setMaLoai(rs.getString("MaLoai"));
 				sp.setTenLoai(rs.getString("TenLoai"));
+				sp.setMaSwitch(rs.getString("MaSwitch"));
+				sp.setTenSwitch(rs.getString("TenSwitch"));
 				sp.setNgayThem(rs.getDate("NgayThem"));
 				sp.setMoTa(rs.getString("MoTa"));
 				return sp;
@@ -217,7 +241,10 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 	@Override
 	@Cacheable(value = "products")
 	public List<ProductModel> search(String Key) {
-		String sql = "select MaSP, AnhSP, TenSP, DonGia, GiamGia, sp.MaLoai, TenLoai,NgayThem,MoTa from SanPham as sp inner join LoaiSP as lsp on sp.MaLoai = lsp.MaLoai where TenSP like'%"+Key+"%'";
+		String sql = "select MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n "
+				+ "from SanPham as sp inner join freetexttable(SanPham,TenSP,'"+Key+"') as KEY_TBL on sp.MaSP = KEY_TBL.[KEY] inner join LoaiSP on sp.MaLoai = LoaiSP.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch\r\n"
+				+ "order by KEY_TBL.RANK DESC\r\n"
+				+ "";
 		List<ProductModel> ds = jdbcTemplate.query(sql, new RowMapper<ProductModel>() {
 			@Override
 			public ProductModel mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -233,6 +260,8 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 				sp.setGiaSale(giasale);
 				sp.setMaLoai(rs.getString("MaLoai"));
 				sp.setTenLoai(rs.getString("TenLoai"));
+				sp.setMaSwitch(rs.getString("MaSwitch"));
+				sp.setTenSwitch(rs.getString("TenSwitch"));
 				sp.setNgayThem(rs.getDate("NgayThem"));
 				sp.setMoTa(rs.getString("MoTa"));
 				return sp;
@@ -251,13 +280,14 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 		sp =  (ProductModel) jdbcTemplate.queryForObject(sql, new Object[] {MaSP}, new BeanPropertyRowMapper(ProductModel.class));
 		Long giasale = (long) (sp.getDonGia() - ( sp.getDonGia() *( (double)sp.getGiamGia()/(double)100)));
 		sp.setGiaSale(giasale);
+		System.out.print("lay ctds \n");
 		return sp;
 	}
 	
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	@CachePut(value = "products")
+	@CachePut(value = "products", key = "#MaSP")
 	public int addProduct(String MaSP,String AnhSP,String TenSP, Long DonGia ,Integer GiamGia, String MaLoai,java.util.Date NgayThem,String MoTa) {
 		String sql = "select count(*) from SanPham where MaSP=?";
 		int count = jdbcTemplate.queryForObject(sql,new Object[] {MaSP}, Integer.class);
@@ -271,6 +301,7 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 	}
 	
 	@Override
+	@CacheEvict(value = "products", key = "#MaSP")
 	public int deleteProduct(String MaSP) {
 		int kq = jdbcTemplate.update("Delete SanPham where MaSP=?", MaSP);
 		return kq;
@@ -278,12 +309,14 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 	
 	
 	@Override
+	@CachePut(value = "products", key = "#MaSP")
 	public int editProductInfo(String MaSP,String AnhSP,String TenSP, Long DonGia ,Integer GiamGia, String MaLoai,java.util.Date NgayThem,String MoTa) {
 		return jdbcTemplate.update("Update SanPham set TenSP=?, AnhSP=?,DonGia=?, GiamGia=?, MaLoai=?, NgayThem=?, MoTa=? where MaSP=?", 
 				TenSP,AnhSP ,DonGia, GiamGia, MaLoai, new java.sql.Date(NgayThem.getTime()),MoTa,MaSP);
 	}
 	
 	@Override
+	@CachePut(value = "products", key = "#MaSP")
 	public int editProductInfoNotImage(String MaSP,String TenSP, Long DonGia ,Integer GiamGia, String MaLoai,java.util.Date NgayThem,String MoTa) {
 		System.out.print("edit product");
 		return jdbcTemplate.update("Update SanPham set TenSP=?,DonGia=?, GiamGia=?, MaLoai=?, NgayThem=?, MoTa=? where MaSP=?", 

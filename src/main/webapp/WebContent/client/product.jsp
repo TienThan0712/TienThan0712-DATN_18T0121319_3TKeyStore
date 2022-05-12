@@ -135,37 +135,35 @@
 			<div class="noidung bg-white" style="width: 100%;">
 				<div class="header-khoi-sp">
 					<div class="sort d-flex ml-auto mb-3">
-						<form action="" style="display:flex;">
+						<form action="/home" style="display:flex;" method="get">
 							<ul class="mr-2">
 								<label for="hienthi-select" class="label-select">Thương hiệu</label>
-								<select class="sapxep-select">
+								<select class="sapxep-select" name="thuonghieu">
 									<option value="moinhat">Mặc định</option>
 									<c:forEach items="${dsloai}" var="s">
-										<option value="moinhat">${s.getTenloai()}</option>
+										<option value="${s.getMaloai()}">${s.getTenloai()}</option>
 									</c:forEach>
 								</select>
 							</ul>
 							<ul class="mr-2">
 								<label for="hienthi-select" class="label-select">Loại Switch</label>
-								<select class="sapxep-select">
+								<select class="sapxep-select" name="loai">
 									<option value="moinhat">Mặc định</option>
-									<option value="moinhat">Red Switch</option>
-									<option value="moinhat">Brown Switch</option>
-									<option value="moinhat">Blue Switch</option>
-									<option value="moinhat">Black Switch</option>
-									<option value="moinhat">Slient Switch</option>
+									<c:forEach items="${dsswitch}" var="s">
+										<option value="${s.getMasw()}">${s.getTensw()}</option>
+									</c:forEach>
 								</select>
 							</ul>
 							<ul class="mr-2">
 								<label for="hienthi-select" class="label-select">Giá</label>
-								<select class="sapxep-select">
+								<select class="sapxep-select" name="gia">
 									<option value="moinhat">Dưới 1 triệu</option>
 									<option value="thap-cao">1 triệu -> 2 triệu</option>
 									<option value="cao-thap">Trên 2 triệu</option>
 								</select>
 							</ul>
 									<div class="hien-thi mr-2">
-										<button style="border: none">
+										<button style="border: none" type="submit">
 											<a class="btn btn-warning text-white">Lọc</a>
 										</button>
 									</div>
@@ -186,8 +184,8 @@
 										<div class="card-body noidungsp mt-3">
 											<h6 class="card-title ten">${s.getTenSP()}</h6>
 											<small class="thuonghieu text-muted">Thương hiệu: ${s.getTenLoai()}</small>
-											<small class="thuonghieu text-muted">Loại Switch: Blue Switch</small>
-											<small class="thuonghieu text-muted">Layou: 106 phím</small>
+											<small class="thuonghieu text-muted">Loại Switch: ${s.getTenSwitch()}</small>
+											<small class="thuonghieu text-muted">Layout: 106 phím</small>
 											<div class="gia d-flex align-items-baseline">
 												<div class="giamoi">
 													<fmt:formatNumber type="NUMBER" value="${s.getGiaSale()}" />

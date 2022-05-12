@@ -17,8 +17,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ThanTrongTien_DATN.KeyBoardStore.Model.CategoryModel;
 import com.ThanTrongTien_DATN.KeyBoardStore.Model.ProductModel;
+import com.ThanTrongTien_DATN.KeyBoardStore.Model.SwitchModel;
 import com.ThanTrongTien_DATN.KeyBoardStore.Service.ICategoryService;
 import com.ThanTrongTien_DATN.KeyBoardStore.Service.IProductService;
+import com.ThanTrongTien_DATN.KeyBoardStore.Service.ISwitchService;
 
 @Controller
 @RequestMapping("/home")
@@ -28,6 +30,9 @@ public class ProductController {
 	
 	@Autowired
 	private IProductService<ProductModel> product; 
+	
+	@Autowired
+	private ISwitchService<SwitchModel> switchs;
 	
 	@GetMapping("/productNew")
 	public String productNew(Model model) throws Exception {
@@ -72,8 +77,9 @@ public class ProductController {
 	@GetMapping("/product/page/{pageNumber}")
 	public String productPage(HttpServletRequest request, @PathVariable int pageNumber, Model model) {
 		PagedListHolder<?> pages = (PagedListHolder<?>) request.getSession().getAttribute("productList");
-		int pagesize = 8;
+		int pagesize = 20;
 		List<CategoryModel> dsloai = category.getLoai();
+		List<SwitchModel> dsswitch = switchs.getSwitch();
 		List<ProductModel> list = (List<ProductModel>) product.getsp();
 		if (pages == null)
 		{
@@ -95,6 +101,7 @@ public class ProductController {
 		int totalPageCount = pages.getPageCount();
 		
 		model.addAttribute("dsloai", dsloai);
+		model.addAttribute("dsswitch", dsswitch);
 		model.addAttribute("beginProduct", begin);
 		model.addAttribute("endProduct", end);
 		model.addAttribute("currentProduct", current);
@@ -164,7 +171,7 @@ public class ProductController {
 	public String searchPage(HttpServletRequest request, @PathVariable int pageNumber, Model model) {
 		HttpSession session = request.getSession();
 		PagedListHolder<?> pages = (PagedListHolder<?>) request.getSession().getAttribute("productList");
-		int pagesize = 8;
+		int pagesize = 16;
 		String key = (String) session.getAttribute("key");
 		List<CategoryModel> dsloai = category.getLoai();
 		List<ProductModel> list = (List<ProductModel>) product.search(key);
