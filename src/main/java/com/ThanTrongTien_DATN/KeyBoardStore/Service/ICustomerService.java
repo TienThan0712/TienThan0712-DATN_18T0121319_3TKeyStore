@@ -21,4 +21,8 @@ public interface ICustomerService<T> {
 	public List<CustomerModel> getKH();
 
 	public int Xoa(long makh);
+
+	public int ResetPassword(String user, String Email);
+
+	public int CheckUser(String user, String Email);
 }

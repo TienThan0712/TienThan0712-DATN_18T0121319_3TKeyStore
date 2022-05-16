@@ -48,6 +48,7 @@
 	content="urDZLDaX8wQZ_-x8ztGIyHqwUQh2KRHvH9FhfoGtiEw" />
 <link rel="manifest"
 	href="<c:url value='/favicon_io/site.webmanifest'/>">
+<script src='https://www.google.com/recaptcha/api.js?hl=vi'></script>
 </head>
 
 <body>
@@ -95,7 +96,7 @@
 							<c:forEach items="${dsloai}" var="s">
 								<li class="liheader"><a href="#"
 									class="header text-uppercase"> <a
-										href="/home/category?ml=${s.getMaloai()}">
+										href="/home/product?ml=${s.getMaloai()}">
 											${s.getTenloai()} </a></li>
 							</c:forEach>
 						</ul>
@@ -267,7 +268,7 @@
 							<a href="#" class="motsanpham"
 								style="text-decoration: none; color: black;"
 								data-toggle="tooltip" data-placement="bottom" title="#"> <img
-								class="card-img-top anh"
+								class="card-img-top anhcamnang"
 								src="https://siliconz.vn/storage/images/ban-phim-co-custom-2048x1152.jpg"
 								alt="#">
 								<div class="card-body noidungsp mt-3">
@@ -285,7 +286,7 @@
 							<a href="#" class="motsanpham"
 								style="text-decoration: none; color: black;"
 								data-toggle="tooltip" data-placement="bottom" title="#"> <img
-								class="card-img-top anh"
+								class="card-img-top anhcamnang"
 								src="https://siliconz.vn/storage/images/ban-phim-co-custom-2048x1152.jpg"
 								alt="#">
 								<div class="card-body noidungsp mt-3">
@@ -303,7 +304,7 @@
 							<a href="#" class="motsanpham"
 								style="text-decoration: none; color: black;"
 								data-toggle="tooltip" data-placement="bottom" title="#"> <img
-								class="card-img-top anh"
+								class="card-img-top anhcamnang"
 								src="https://siliconz.vn/storage/images/ban-phim-co-custom-2048x1152.jpg"
 								alt="#">
 								<div class="card-body noidungsp mt-3">
@@ -321,7 +322,7 @@
 							<a href="#" class="motsanpham"
 								style="text-decoration: none; color: black;"
 								data-toggle="tooltip" data-placement="bottom" title="#"> <img
-								class="card-img-top anh"
+								class="card-img-top anhcamnang"
 								src="https://siliconz.vn/storage/images/ban-phim-co-custom-2048x1152.jpg"
 								alt="#">
 								<div class="card-body noidungsp mt-3">
@@ -339,7 +340,7 @@
 							<a href="#" class="motsanpham"
 								style="text-decoration: none; color: black;"
 								data-toggle="tooltip" data-placement="bottom" title="#"> <img
-								class="card-img-top anh"
+								class="card-img-top anhcamnang"
 								src="https://siliconz.vn/storage/images/ban-phim-co-custom-2048x1152.jpg"
 								alt="#">
 								<div class="card-body noidungsp mt-3">

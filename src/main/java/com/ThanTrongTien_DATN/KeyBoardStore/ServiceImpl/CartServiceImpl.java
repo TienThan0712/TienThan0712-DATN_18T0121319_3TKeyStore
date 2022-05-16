@@ -81,20 +81,20 @@ public class CartServiceImpl implements ICartService<CartModel> {
 	}
 
 	@Override
-	public int themHoaDondao(Long makh){
-		return jdbcTemplate.update("INSERT dbo.HoaDon (MaKH, NgayMua, TrangThai) VALUES (?, GETDATE(), 0)",makh);
+	public int themHoaDondao(Long makh, Long total){
+		return jdbcTemplate.update("INSERT dbo.HoaDon (MaKH, NgayMua, TrangThai, ThanhTien) VALUES (?, GETDATE(), 0,?)",makh,total);
 	}
 	
 	@Override
-	public int themCTHDdao(String masp, long soluong, long mahd) {
-		return jdbcTemplate.update("INSERT dbo.ChiTietHoaDon (MaHD, MaSP, SoLuong)  VALUES (?,?,?)",mahd,masp,soluong);
+	public int themCTHDdao(String masp, long soluong, long mahd, long thanhtien) {
+		return jdbcTemplate.update("INSERT dbo.ChiTietHoaDon (MaHD, MaSP, SoLuong,ThanhTien)  VALUES (?,?,?,?)",mahd,masp,soluong,thanhtien);
 	}
 
 	public void themCTHD (List<CartModel> dsgiohang, long maHD)
 	{
 		for (CartModel hang:dsgiohang)
 		{
-			themCTHDdao(hang.getMaSP(), hang.getSoLuong(), maHD);
+			themCTHDdao(hang.getMaSP(), hang.getSoLuong(), maHD, hang.getThanhTien());
 		}
 	}
 	

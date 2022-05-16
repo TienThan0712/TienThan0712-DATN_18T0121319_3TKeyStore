@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -58,21 +59,25 @@ public class ProductController {
 		model.addAttribute("dssp", dssp);
 		return "client/productHot";
 	};
-	/*
-	 * @GetMapping("/product") public String product(Model model) throws Exception {
-	 * List<CategoryModel> dsloai = category.getLoai(); List<ProductModel> dssp =
-	 * product.getsp(); model.addAttribute("dsloai", dsloai);
-	 * model.addAttribute("dssp", dssp); return "client/product"; };
-	 */
+
 	@GetMapping("/product")
 	public String product(Model model, HttpServletRequest request, RedirectAttributes redirect) throws Exception {
 		request.getSession().setAttribute("productList", null);
-		/*
-		 * if(model.asMap().get("success")!=null) redirect.addFlashAttribute("success",
-		 * model.asMap().get("success").toString());
-		 */
+		if (request.getParameter("ml")!=null)
+		{
+			request.getSession().setAttribute("category", request.getParameter("ml"));
+		}
 		return "redirect:/home/product/page/1";
 	};
+	
+	@PostMapping("/product")
+	public String product(@Param("thuonghieu") String thuonghieu, @Param("loai") String loai,@Param("gia") String gia,Model model,HttpServletRequest request) {
+		request.getSession().setAttribute("productList", null);
+		request.getSession().setAttribute("thuonghieu", thuonghieu);
+		request.getSession().setAttribute("loai", loai);
+		request.getSession().setAttribute("gia", gia);
+		return "redirect:/home/product/page/1";
+	}
 	
 	@GetMapping("/product/page/{pageNumber}")
 	public String productPage(HttpServletRequest request, @PathVariable int pageNumber, Model model) {
@@ -80,7 +85,30 @@ public class ProductController {
 		int pagesize = 20;
 		List<CategoryModel> dsloai = category.getLoai();
 		List<SwitchModel> dsswitch = switchs.getSwitch();
-		List<ProductModel> list = (List<ProductModel>) product.getsp();
+		List<ProductModel> list = null;
+		if (request.getSession().getAttribute("category")!=null)
+		{
+			String maloai = (String) request.getSession().getAttribute("category");
+			list = (List<ProductModel>) product.getCategory(maloai);
+			request.getSession().removeAttribute("category");
+		}
+		else if (request.getSession().getAttribute("thuonghieu")!=null
+				&& request.getSession().getAttribute("loai")!=null
+				&& request.getSession().getAttribute("gia")!=null)
+		{
+			String thuonghieu = (String) request.getSession().getAttribute("thuonghieu");
+			String loai = (String) request.getSession().getAttribute("loai");
+			String gia = (String) request.getSession().getAttribute("gia");
+			list = (List<ProductModel>) product.searchBuFilter(product.getsp(),thuonghieu , loai, gia);
+			request.getSession().removeAttribute("thuonghieu");
+			request.getSession().removeAttribute("loai");
+			request.getSession().removeAttribute("gia");
+		}
+		else 
+		{
+			list = (List<ProductModel>) product.getsp();
+		}
+		
 		if (pages == null)
 		{
 			pages = new PagedListHolder<>(list);
@@ -110,54 +138,6 @@ public class ProductController {
 		return "client/product";
 	}
 	
-	@GetMapping("/category")
-	public String category(Model model, HttpServletRequest request, RedirectAttributes redirect,@Param("ml") String ml) throws Exception {
-		HttpSession session = request.getSession();
-		request.getSession().setAttribute("productList", null);
-		CategoryModel loai = category.getMotLoai(ml);
-		session.setAttribute("loai", loai);
-		
-		return "redirect:/home/category/page/1";
-	};
-	
-	@GetMapping("/category/page/{pageNumber}")
-	public String categoryPage(HttpServletRequest request, @PathVariable int pageNumber, Model model) {
-		HttpSession session = request.getSession();
-		PagedListHolder<?> pages = (PagedListHolder<?>) request.getSession().getAttribute("productList");
-		int pagesize = 8;
-		CategoryModel CategoryModel = (CategoryModel) session.getAttribute("loai");
-		List<CategoryModel> dsloai = category.getLoai();
-		CategoryModel loai = category.getMotLoai(CategoryModel.getMaloai());
-		List<ProductModel> list = (List<ProductModel>) product.getCategory(CategoryModel.getMaloai());
-		if (pages == null)
-		{
-			pages = new PagedListHolder<>(list);
-			pages.setPageSize(pagesize);
-		}
-		else
-		{
-			final int gotoPage = pageNumber - 1;
-			if (gotoPage <= pages.getPageCount() && gotoPage >= 0)
-			{
-				pages.setPage(gotoPage);
-			}
-		}
-		request.getSession().setAttribute("productList", pages);
-		int current = pages.getPage() + 1;
-		int begin = Math.max(1, current - list.size());
-		int end = Math.min(begin + 5, pages.getPageCount());
-		int totalPageCount = pages.getPageCount();
-		
-		model.addAttribute("dsloai", dsloai);
-		model.addAttribute("loai", loai);
-		model.addAttribute("beginProduct", begin);
-		model.addAttribute("endProduct", end);
-		model.addAttribute("currentProduct", current);
-		model.addAttribute("totalPageCount", totalPageCount);
-		model.addAttribute("products", pages);
-		return "client/category";
-	}
-	
 	@GetMapping("/search")
 	public String search(Model model, HttpServletRequest request, RedirectAttributes redirect,@Param("key") String key) throws Exception {
 		HttpSession session = request.getSession();
@@ -171,7 +151,7 @@ public class ProductController {
 	public String searchPage(HttpServletRequest request, @PathVariable int pageNumber, Model model) {
 		HttpSession session = request.getSession();
 		PagedListHolder<?> pages = (PagedListHolder<?>) request.getSession().getAttribute("productList");
-		int pagesize = 16;
+		int pagesize = 20;
 		String key = (String) session.getAttribute("key");
 		List<CategoryModel> dsloai = category.getLoai();
 		List<ProductModel> list = (List<ProductModel>) product.search(key);
@@ -194,6 +174,7 @@ public class ProductController {
 		int end = Math.min(begin + 5, pages.getPageCount());
 		int totalPageCount = pages.getPageCount();
 		
+		model.addAttribute("key", key);		
 		model.addAttribute("dsloai", dsloai);
 		model.addAttribute("beginProduct", begin);
 		model.addAttribute("endProduct", end);

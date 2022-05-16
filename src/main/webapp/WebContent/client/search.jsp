@@ -68,7 +68,7 @@
 								<c:forEach items="${dsloai}" var="s">
 									<li class="liheader"><a href="#"
 										class="header text-uppercase"> <a
-											href="/home/category?ml=${s.getMaloai()}">
+											href="/home/product?ml=${s.getMaloai()}">
 												${s.getTenloai()} </a></li>
 								</c:forEach>
 							</ul>
@@ -102,18 +102,10 @@
 		</div>
 	</section>
 
-	<!-- ảnh banner  -->
-	<section class="banner">
-		<div class="container">
-			<a href="sach-moi-tuyen-chon.html"><img
-				src="images/banner-sach-ktkn.jpg" alt="banner-sach-ktkn"
-				class="img-fluid"></a>
-		</div>
-	</section>
 	<section class="page-content my-3">
 		<div class="container">
 			<div>
-				<h1 class="header text-uppercase">Sản phẩm</h1>
+				<h1 class="header text-uppercase">Kết quả tìm kiếm: ${key }</h1>
 			</div>
 		</div>
 	</section>

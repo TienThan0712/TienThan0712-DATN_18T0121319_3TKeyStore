@@ -100,7 +100,7 @@ public class OrderServiceImpl implements IOrderService<OrderModel> {
 				+ "from HoaDon as hd inner join ChiTietHoaDon as cthd on hd.MaHD=cthd.MaHD\r\n"
 				+ "	inner join SanPham as sp on cthd.MaSP=sp.MaSP\r\n"
 				+ "	inner join KhachHang as kh on kh.MaKH=hd.MaKH\r\n" + "where hd.TrangThai=1\r\n"
-				+ "group by hd.MaHD,hd.NgayMua,hd.TrangThai,kh.HoTen,kh.SoDT";
+				+ "group by hd.MaHD,hd.NgayMua,hd.NgayGiaoHang,hd.TrangThai,kh.HoTen,kh.SoDT";
 		List<OrderModel> ds = jdbcTemplate.query(sql, new RowMapper<OrderModel>() {
 			@Override
 			public OrderModel mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -119,11 +119,11 @@ public class OrderServiceImpl implements IOrderService<OrderModel> {
 	
 	@Override
 	public List<OrderModel> getDonHangDaTT(long makh) {
-		String sql = "select hd.MaHD ,kh.HoTen,kh.SoDT,sum(cthd.SoLuong * (sp.DonGia-(sp.DonGia*(sp.GiamGia/100.0)))) as TongTien,hd.NgayMua, hd.TrangThai\r\n"
+		String sql = "select hd.MaHD ,kh.HoTen,kh.SoDT,sum(cthd.SoLuong * (sp.DonGia-(sp.DonGia*(sp.GiamGia/100.0)))) as TongTien,hd.NgayMua, hd.TrangThai,hd.NgayGiaoHang\r\n"
 				+ "from HoaDon as hd inner join ChiTietHoaDon as cthd on hd.MaHD=cthd.MaHD\r\n"
 				+ "	inner join SanPham as sp on cthd.MaSP=sp.MaSP\r\n"
 				+ "	inner join KhachHang as kh on kh.MaKH=hd.MaKH\r\n" + "where kh.MaKH="+makh+" and hd.TrangThai=2 or hd.TrangThai=3\r\n"
-				+ "group by hd.MaHD,hd.NgayMua,hd.TrangThai,kh.HoTen,kh.SoDT order by hd.MaHD DESC";
+				+ "group by hd.MaHD,hd.NgayMua,hd.NgayGiaoHang,hd.TrangThai,kh.HoTen,kh.SoDT order by hd.MaHD DESC";
 		List<OrderModel> ds = jdbcTemplate.query(sql, new RowMapper<OrderModel>() {
 			@Override
 			public OrderModel mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -133,6 +133,7 @@ public class OrderServiceImpl implements IOrderService<OrderModel> {
 				dh.setSoDT(rs.getString("SoDT"));
 				dh.setTongTien(rs.getLong("TongTien"));
 				dh.setNgayMua(rs.getDate("NgayMua"));
+				dh.setNgayGiaoHang(rs.getDate("NgayGiaoHang"));
 				dh.setTrangThai(rs.getInt("TrangThai"));
 				return dh;
 			}
@@ -142,11 +143,11 @@ public class OrderServiceImpl implements IOrderService<OrderModel> {
 	
 	@Override
 	public List<OrderModel> DonHangDaTT() {
-		String sql = "select hd.MaHD ,kh.HoTen,kh.SoDT,sum(cthd.SoLuong * (sp.DonGia-(sp.DonGia*(sp.GiamGia/100.0)))) as TongTien,hd.NgayMua, hd.TrangThai\r\n"
+		String sql = "select hd.MaHD ,kh.HoTen,kh.SoDT,sum(cthd.SoLuong * (sp.DonGia-(sp.DonGia*(sp.GiamGia/100.0)))) as TongTien,hd.NgayMua, hd.TrangThai, hd.NgayGiaoHang\r\n"
 				+ "from HoaDon as hd inner join ChiTietHoaDon as cthd on hd.MaHD=cthd.MaHD\r\n"
 				+ "	inner join SanPham as sp on cthd.MaSP=sp.MaSP\r\n"
 				+ "	inner join KhachHang as kh on kh.MaKH=hd.MaKH\r\n" + "where hd.TrangThai=2 or hd.TrangThai=3 \r\n"
-				+ "group by hd.MaHD,hd.NgayMua,hd.TrangThai,kh.HoTen,kh.SoDT";
+				+ "group by hd.MaHD,hd.NgayMua,hd.NgayGiaoHang,hd.TrangThai,kh.HoTen,kh.SoDT";
 		List<OrderModel> ds = jdbcTemplate.query(sql, new RowMapper<OrderModel>() {
 			@Override
 			public OrderModel mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -156,6 +157,7 @@ public class OrderServiceImpl implements IOrderService<OrderModel> {
 				dh.setSoDT(rs.getString("SoDT"));
 				dh.setTongTien(rs.getLong("TongTien"));
 				dh.setNgayMua(rs.getDate("NgayMua"));
+				dh.setNgayGiaoHang(rs.getDate("NgayGiaoHang"));
 				dh.setTrangThai(rs.getInt("TrangThai"));
 				return dh;
 			}
@@ -240,6 +242,6 @@ public class OrderServiceImpl implements IOrderService<OrderModel> {
 	
 	@Override
 	public int NhanHang(long madh) {
-		return jdbcTemplate.update("update HoaDon set TrangThai='2' where MaHD=?",madh);
+		return jdbcTemplate.update("update HoaDon set TrangThai='2',NgayGiaoHang=GETDATE()  where MaHD=?",madh);
 	}
 }

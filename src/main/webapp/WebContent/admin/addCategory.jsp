@@ -51,13 +51,13 @@
 								<label style="color: black; font-size: 20px">Mã thương
 									hiệu sản phẩm</label> <input type="text" name="maloai"
 									class="form-control" id="exampleInputEmail1"
-									placeholder="Nhập mã loại">
+									placeholder="Nhập mã thương hiệu">
 							</div>
 							<div class="form-group">
 								<label style="color: black; font-size: 20px">Tên thương
 									hiệu sản phẩm</label> <input type="text" name="tenloai"
 									class="form-control" id="exampleInputPassword1"
-									placeholder="Nhập tên mã loại">
+									placeholder="Nhập tên thương hiệu">
 							</div>
 							<button type="submit" name="btnThem" class="btn btn-info"
 								style="background: #F44336">Thêm</button>

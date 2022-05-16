@@ -72,21 +72,21 @@ public class AdminCategoryController {
 					category.clearCatche();
 					if (ktra == -1)
 					{
-						model.addAttribute("tb", "Mã loại đã tồn tại");
+						model.addAttribute("tb", "Mã thương hiệu đã tồn tại");
 						return "admin/addCategory";
 					}
 					else if (ktra == 1)
 					{
 						List<CategoryModel> dsloai = category.getLoai();
 						model.addAttribute("dsloai", dsloai);
-						model.addAttribute("tb", "Mã loại đã tồn tại");
+						model.addAttribute("tb", "Thêm thương hiệu thành công");
 						model.addAttribute("link", "category");
 						model.addAttribute("linkCategory", "addCategory");
 						return "admin/category";
 					}
 					else
 					{
-						model.addAttribute("tb", "Mã loại đã tồn tại");
+						model.addAttribute("tb", "Mã thương hiệu đã tồn tại");
 						return "admin/addCategory";
 					}
 				}

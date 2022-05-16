@@ -28,6 +28,7 @@
 	rel='stylesheet' type='text/css' />
 <link rel="stylesheet"
 	href="<c:url value='/assets/js/Lightweight-Chart/cssCharts.css'/>">
+<script type="text/javascript" src="<c:url value= '/ckeditor/ckeditor.js' />"> </script>
 </head>
 <body>
 	<c:if test="${not empty tb}">
@@ -92,6 +93,29 @@
 								</select>
 							</div>
 							<div class="form-group">
+								<label style="color: black; font-size: 20px">Mã Switch</label> <select
+									class="form-control" required name="maswitch">
+									<c:forEach items="${dsswitch }" var="sw">
+										<c:if test="${spbean.getMaSwitch() eq sw.getMaSwitch() }">
+											<option value="${spbean.getMaSwitch()}" selected="selected">
+												${sw.getTenSwitch() }</option>
+										</c:if>
+									</c:forEach>
+									<c:forEach items="${dsswitch }" var="sw">
+										<c:choose>
+											<c:when test="${spbean.getMaSwitch() eq sw.getMaSwitch() }">
+												<option value="${spbean.getMaSwitch()}" hidden="">
+													${sw.getTenSwitch() }</option>
+											</c:when>
+											<c:otherwise>
+												<option value="${sw.getMaSwitch() }">${sw.getTenSwitch() }
+												</option>
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
+								</select>
+							</div>
+							<div class="form-group">
 								<label style="color: black; font-size: 20px">Ngày thêm</label> <input
 									type="date" name="ngaythem" class="form-control"
 									id="exampleInputPassword1" value="${spbean.getNgayThem() }">
@@ -101,9 +125,8 @@
 									sản phẩm</label> <input type="file" name="anhsp" id="anhsp">
 							</div>
 							<div class="form-group">
-								<label style="color: black; font-size: 20px">Mô tả sản
-									phẩm</label>
-								<textarea style="width: 1170px; height: 323px" name="mota"
+								<label style="color: black; font-size: 20px">Mô tả sản phẩm</label> <br>
+								<textarea style="width: 1170px; height: 323px" name="mota" id="mota"
 									required="required">${spbean.getMoTa() }</textarea>
 							</div>
 							<button type="submit" name="btnSua" class="btn btn-info"
@@ -118,5 +141,12 @@
 		</div>
 	</div>
 	<jsp:include page="layout/script.jsp"></jsp:include>
+	<script type="text/javascript">	
+		var editor='';
+		$(document).ready(function(){
+		  editor = CKEDITOR.replace( 'mota' );
+		});
+		CKEDITOR.replace( 'mota' );
+	</script>
 </body>
 </html>

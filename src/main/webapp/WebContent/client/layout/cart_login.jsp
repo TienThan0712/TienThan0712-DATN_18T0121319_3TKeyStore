@@ -56,21 +56,23 @@
 										placeholder="Mật khẩu" name="pass" required>
 								</div>
 								<div class="custom-control custom-checkbox mb-3">
-									<a href="#" class="float-right text-decoration-none"
+									<a href="/home/password" class="float-right text-decoration-none"
 										style="color: #F5A623">Quên mật khẩu</a>
 								</div>
+								<div class="g-recaptcha ml-3"
+									data-sitekey="6LfTF_AfAAAAAFuklySFxZats2bVdnE9G5ggp3Au">
+								</div>
+								<script>
+								  grecaptcha.ready(function() {
+								      grecaptcha.execute('reCAPTCHA_site_key', {action: 'homepage'}).then(function(token) {
+								         ...
+								      });
+								  });
+								  </script>
 								<button
-									class="btn btn-lg btn-block btn-signin text-uppercase text-white"
+									class="btn btn-lg btn-block btn-signin text-uppercase text-white mt-3"
 									type="submit" style="background: #F5A623">Đăng nhập</button>
 								<hr class="my-4">
-								<button class="btn btn-lg btn-google btn-block text-uppercase"
-									type="submit">
-									<i class="fab fa-google mr-2"></i> Đăng nhập bằng Google
-								</button>
-								<button class="btn btn-lg btn-facebook btn-block text-uppercase"
-									type="submit">
-									<i class="fab fa-facebook-f mr-2"></i> Đăng nhập bằng Facebook
-								</button>
 							</form>
 						</div>
 						<div class="tab-pane fade" id="nav-dangky" role="tabpanel"
@@ -103,6 +105,15 @@
 									<input type="text" class="form-control" name="diachi"
 										id="diachi" placeholder="Nhập địa chỉ" />
 								</div>
+								<div class="g-recaptcha ml-3" data-sitekey="6LfTF_AfAAAAAFuklySFxZats2bVdnE9G5ggp3Au">
+						         </div>
+								  <script>
+								  grecaptcha.ready(function() {
+								      grecaptcha.execute('reCAPTCHA_site_key', {action: 'homepage'}).then(function(token) {
+								         ...
+								      });
+								  });
+								  </script>
 								<div class="custom-control custom-checkbox mb-3">
 									<p class="text-center">Bằng việc đăng ký, bạn đã đồng ý với
 										3TKeyStore về</p>

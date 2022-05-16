@@ -8,18 +8,21 @@ public class OrderModel {
 	private String SoDT;
 	private Long TongTien;
 	private Date NgayMua;
+	private Date NgayGiaoHang;
 	private Integer TrangThai;
 	public OrderModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public OrderModel(Long maHD, String hoTen, String soDT, Long tongTien, Date ngayMua, Integer trangThai) {
+	public OrderModel(Long maHD, String hoTen, String soDT, Long tongTien, Date ngayMua, Date ngayGiaoHang,
+			Integer trangThai) {
 		super();
 		MaHD = maHD;
 		HoTen = hoTen;
 		SoDT = soDT;
 		TongTien = tongTien;
 		NgayMua = ngayMua;
+		NgayGiaoHang = ngayGiaoHang;
 		TrangThai = trangThai;
 	}
 	public Long getMaHD() {
@@ -52,10 +55,17 @@ public class OrderModel {
 	public void setNgayMua(Date ngayMua) {
 		NgayMua = ngayMua;
 	}
+	public Date getNgayGiaoHang() {
+		return NgayGiaoHang;
+	}
+	public void setNgayGiaoHang(Date ngayGiaoHang) {
+		NgayGiaoHang = ngayGiaoHang;
+	}
 	public Integer getTrangThai() {
 		return TrangThai;
 	}
 	public void setTrangThai(Integer trangThai) {
 		TrangThai = trangThai;
 	}
+	
 }

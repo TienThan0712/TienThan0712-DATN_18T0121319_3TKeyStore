@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +17,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import com.ThanTrongTien_DATN.KeyBoardStore.Model.CategoryModel;
 import com.ThanTrongTien_DATN.KeyBoardStore.Model.ProductModel;
+import com.ThanTrongTien_DATN.KeyBoardStore.Model.SwitchModel;
 import com.ThanTrongTien_DATN.KeyBoardStore.Service.IProductService;
 
 @Component
@@ -270,13 +274,134 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 		return ds;
 	}
 	
+	@Override
+	public List<ProductModel> searchBuFilter (List<ProductModel> product, String maThuongHieu, String maSwitch, String giaSP)
+	{
+		List<ProductModel> result= null;
+		Predicate<ProductModel> MaThuongHieu = pt -> pt.getMaLoai().equals(maThuongHieu);
+		Predicate<ProductModel> MaLoaiSwitch = pt -> pt.getMaSwitch().equals(maSwitch);
+		Predicate<ProductModel> GiaDuoi1Trieu = pt -> pt.getGiaSale() < 1000000;
+		Predicate<ProductModel> GiaTu1Den2Trieu = pt -> pt.getGiaSale()>= 1000000 && pt.getGiaSale()<= 2000000;
+		Predicate<ProductModel> GiaTu2Den3Trieu = pt -> pt.getGiaSale()>= 2000000 && pt.getGiaSale()<= 3000000;
+		Predicate<ProductModel> GiaTren3Trieu = pt -> pt.getGiaSale()> 3000000;
+		if(maThuongHieu!=null && maSwitch!=null)
+		{
+			if (maThuongHieu.length()>1&&maSwitch.length()>1)
+			{
+				switch(giaSP)
+				{
+				case "":
+					result = product.stream().
+					filter(MaThuongHieu).filter(MaLoaiSwitch).collect(Collectors.toList());
+					break;
+				case "duoi-1-trieu":
+					result = product.stream().
+					filter(MaThuongHieu).filter(MaLoaiSwitch).filter(GiaDuoi1Trieu).collect(Collectors.toList());
+					break;
+				case "1-trieu-toi-2-trieu":
+					result = product.stream().
+					filter(MaThuongHieu).filter(MaLoaiSwitch).filter(GiaTu1Den2Trieu).collect(Collectors.toList());
+					break;
+				case "2-trieu-toi-3-trieu":
+					result = product.stream().
+					filter(MaThuongHieu).filter(MaLoaiSwitch).filter(GiaTu2Den3Trieu).collect(Collectors.toList());
+					break;
+				case "tren-3-trieu":
+					result = product.stream().
+					filter(MaThuongHieu).filter(MaLoaiSwitch).filter(GiaTren3Trieu).collect(Collectors.toList());
+					break;
+				}
+			}
+			else if (maThuongHieu.length()>1&&maSwitch.equals(""))
+			{
+				switch(giaSP)
+				{
+				case "":
+					result = product.stream().
+					filter(MaThuongHieu).collect(Collectors.toList());
+					break;
+				case "duoi-1-trieu":
+					result = product.stream().
+					filter(MaThuongHieu).filter(GiaDuoi1Trieu).collect(Collectors.toList());
+					break;
+				case "1-trieu-toi-2-trieu":
+					result = product.stream().
+					filter(MaThuongHieu).filter(GiaTu1Den2Trieu).collect(Collectors.toList());
+					break;
+				case "2-trieu-toi-3-trieu":
+					result = product.stream().
+					filter(MaThuongHieu).filter(GiaTu2Den3Trieu).collect(Collectors.toList());
+					break;
+				case "tren-3-trieu":
+					result = product.stream().
+					filter(MaThuongHieu).filter(GiaTren3Trieu).collect(Collectors.toList());
+					break;
+				}
+			}
+			else if (maThuongHieu.equals("")&&maSwitch.length()>1)
+			{
+				switch(giaSP)
+				{
+				case "":
+					result = product.stream().
+					filter(MaLoaiSwitch).collect(Collectors.toList());
+					break;
+				case "duoi-1-trieu":
+					result = product.stream().
+					filter(MaLoaiSwitch).filter(GiaDuoi1Trieu).collect(Collectors.toList());
+					break;
+				case "1-trieu-toi-2-trieu":
+					result = product.stream().
+					filter(MaLoaiSwitch).filter(GiaTu1Den2Trieu).collect(Collectors.toList());
+					break;
+				case "2-trieu-toi-3-trieu":
+					result = product.stream().
+					filter(MaLoaiSwitch).filter(GiaTu2Den3Trieu).collect(Collectors.toList());
+					break;
+				case "tren-3-trieu":
+					result = product.stream().
+					filter(MaLoaiSwitch).filter(GiaTren3Trieu).collect(Collectors.toList());
+					break;
+				}
+			}
+			else if (maThuongHieu.equals("")&&maSwitch.equals(""))
+			{
+				switch(giaSP)
+				{
+				case "":
+					result = product.stream().
+					collect(Collectors.toList());
+					break;
+				case "duoi-1-trieu":
+					result = product.stream().
+					filter(GiaDuoi1Trieu).collect(Collectors.toList());
+					break;
+				case "1-trieu-toi-2-trieu":
+					result = product.stream().
+					filter(GiaTu1Den2Trieu).collect(Collectors.toList());
+					break;
+				case "2-trieu-toi-3-trieu":
+					result = product.stream().
+					filter(GiaTu2Den3Trieu).collect(Collectors.toList());
+					break;
+				case "tren-3-trieu":
+					result = product.stream().
+					filter(GiaTren3Trieu).collect(Collectors.toList());
+					break;
+				}
+			}
+		}
+		return result;
+	}
+	
 	
 	@SuppressWarnings({ "deprecation", "unchecked", "rawtypes" })
 	@Override
 	@Cacheable(value = "products", key = "#MaSP")
 	public ProductModel get1sp(String MaSP) {
 		ProductModel sp = new ProductModel();
-		String sql="select MaSP, AnhSP, TenSP, DonGia, GiamGia, sp.MaLoai, TenLoai,NgayThem,MoTa from SanPham as sp inner join LoaiSP as lsp on sp.MaLoai = lsp.MaLoai where MaSP=?";
+		String sql="select MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n "
+				+ "from SanPham as sp inner join LoaiSP as l on sp.MaLoai = l.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch where MaSP=?";
 		sp =  (ProductModel) jdbcTemplate.queryForObject(sql, new Object[] {MaSP}, new BeanPropertyRowMapper(ProductModel.class));
 		Long giasale = (long) (sp.getDonGia() - ( sp.getDonGia() *( (double)sp.getGiamGia()/(double)100)));
 		sp.setGiaSale(giasale);
@@ -288,14 +413,14 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 	@SuppressWarnings("deprecation")
 	@Override
 	@CachePut(value = "products", key = "#MaSP")
-	public int addProduct(String MaSP,String AnhSP,String TenSP, Long DonGia ,Integer GiamGia, String MaLoai,java.util.Date NgayThem,String MoTa) {
+	public int addProduct(String MaSP,String AnhSP,String TenSP, Long DonGia ,Integer GiamGia, String MaLoai,String MaSwitch,java.util.Date NgayThem,String MoTa) {
 		String sql = "select count(*) from SanPham where MaSP=?";
 		int count = jdbcTemplate.queryForObject(sql,new Object[] {MaSP}, Integer.class);
 		if (count >=1){
 			return -1;
 		} else if (count == 0) {
-			return jdbcTemplate.update("insert into SanPham (MaSP, AnhSP, TenSP, DonGia, GiamGia, MaLoai, NgayThem, MoTa) values (?,?,?,?,?,?,?,?)", 
-					MaSP, AnhSP, TenSP, DonGia, GiamGia, MaLoai, new java.sql.Date(NgayThem.getTime()),MoTa);
+			return jdbcTemplate.update("insert into SanPham (MaSP, AnhSP, TenSP, DonGia, GiamGia, MaLoai,MaSwitch, NgayThem, MoTa) values (?,?,?,?,?,?,?,?,?)", 
+					MaSP, AnhSP, TenSP, DonGia, GiamGia, MaLoai,MaSwitch ,new java.sql.Date(NgayThem.getTime()),MoTa);
 		} else
 			return 0;
 	}
@@ -310,17 +435,17 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 	
 	@Override
 	@CachePut(value = "products", key = "#MaSP")
-	public int editProductInfo(String MaSP,String AnhSP,String TenSP, Long DonGia ,Integer GiamGia, String MaLoai,java.util.Date NgayThem,String MoTa) {
-		return jdbcTemplate.update("Update SanPham set TenSP=?, AnhSP=?,DonGia=?, GiamGia=?, MaLoai=?, NgayThem=?, MoTa=? where MaSP=?", 
-				TenSP,AnhSP ,DonGia, GiamGia, MaLoai, new java.sql.Date(NgayThem.getTime()),MoTa,MaSP);
+	public int editProductInfo(String MaSP,String AnhSP,String TenSP, Long DonGia ,Integer GiamGia, String MaLoai,String MaSwitch,java.util.Date NgayThem,String MoTa) {
+		return jdbcTemplate.update("Update SanPham set TenSP=?, AnhSP=?,DonGia=?, GiamGia=?, MaLoai=?,MaSwitch=?, NgayThem=?, MoTa=? where MaSP=?", 
+				TenSP,AnhSP ,DonGia, GiamGia, MaLoai,MaSwitch ,new java.sql.Date(NgayThem.getTime()),MoTa,MaSP);
 	}
 	
 	@Override
 	@CachePut(value = "products", key = "#MaSP")
-	public int editProductInfoNotImage(String MaSP,String TenSP, Long DonGia ,Integer GiamGia, String MaLoai,java.util.Date NgayThem,String MoTa) {
+	public int editProductInfoNotImage(String MaSP,String TenSP, Long DonGia ,Integer GiamGia, String MaLoai,String MaSwitch,java.util.Date NgayThem,String MoTa) {
 		System.out.print("edit product");
-		return jdbcTemplate.update("Update SanPham set TenSP=?,DonGia=?, GiamGia=?, MaLoai=?, NgayThem=?, MoTa=? where MaSP=?", 
-				TenSP,DonGia, GiamGia, MaLoai, new java.sql.Date(NgayThem.getTime()),MoTa,MaSP);
+		return jdbcTemplate.update("Update SanPham set TenSP=?,DonGia=?, GiamGia=?, MaLoai=?,MaSwitch=? ,NgayThem=?, MoTa=? where MaSP=?", 
+				TenSP,DonGia, GiamGia, MaLoai,MaSwitch, new java.sql.Date(NgayThem.getTime()),MoTa,MaSP);
 	}
 	
 	@Override

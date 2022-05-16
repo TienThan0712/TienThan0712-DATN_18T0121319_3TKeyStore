@@ -40,7 +40,7 @@
 	<jsp:include page="layout/header.jsp"></jsp:include>
 	<div id="page-wrapper">
 		<div class="header">
-			<h1 class="page-header">Danh sách đơn hàng</h1>
+			<h1 class="page-header">Danh sách đơn hàng đã hủy</h1>
 		</div>
 		<div id="page-inner">
 			<div class="row">

@@ -59,7 +59,7 @@
 
 				<div class="dropdown">
 					<c:choose>
-						<c:when test="${sessionScope.kh!=null }">
+						<c:when test="${sessionScope.kh!=null }"> 
 							<li class="nav-item account " type="button" class="btn dropdown"
 								data-toggle="dropdown"><a href="#"
 								class="btn btn-secondary rounded-circle"> <i
@@ -146,6 +146,15 @@
 						<input type="text" class="form-control" name="diachi" id="diachi"
 							placeholder="Nhập địa chỉ" />
 					</div>
+					<div class="g-recaptcha ml-3" data-sitekey="6LfTF_AfAAAAAFuklySFxZats2bVdnE9G5ggp3Au">
+			         </div>
+					  <script>
+					  grecaptcha.ready(function() {
+					      grecaptcha.execute('reCAPTCHA_site_key', {action: 'homepage'}).then(function(token) {
+					         ...
+					      });
+					  });
+					  </script>
 					<button
 						class="btn btn-lg btn-block btn-signin text-uppercase text-white mt-3"
 						type="submit" style="background: #F5A623">Đăng ký</button>
@@ -183,37 +192,36 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<form id="form-signin" class="form-signin mt-2" action="/home/login" method="post">
+				<script src="https://www.google.com/recaptcha/api.js?render=reCAPTCHA_site_key" async defer></script>
+				<form id="form-signin" class="form-signin mt-2" action="/home/login" method="get">
 					<div class="form-label-group">
 						<input type="text" class="form-control"
-							placeholder="Nhập địa chỉ email" name="user" required autofocus>
+							placeholder="Nhập tên đăng nhập" name="user" required autofocus>
 					</div>
 
 					<div class="form-label-group">
-						<input type="password" class="form-control" placeholder="Mật khẩu"
+						<input type="password" class="form-control" placeholder="Nhập mật khẩu"
 							name="pass" required>
 					</div>
 
 					<div class="custom-control custom-checkbox mb-3">
-						<input type="checkbox" class="custom-control-input"
-							id="customCheck1"> <label class="custom-control-label"
-							for="customCheck1">Nhớ mật khẩu</label> <a href="/home/password"
-							class="float-right text-decoration-none" style="color: #F5A623">Quên
+						<input type="checkbox" class="custom-control-input" id="customCheck1" name="check" value="on"> 
+							<label class="custom-control-label" for="customCheck1" >Nhớ mật khẩu </label>
+						<a href="/home/password" class="float-right text-decoration-none" style="color: #F5A623">Quên
 							mật khẩu</a>
 					</div>
-
+					<div class="g-recaptcha ml-3" data-sitekey="6LfTF_AfAAAAAFuklySFxZats2bVdnE9G5ggp3Au">
+			         </div>
+					  <script>
+					  grecaptcha.ready(function() {
+					      grecaptcha.execute('reCAPTCHA_site_key', {action: 'homepage'}).then(function(token) {
+					         ...
+					      });
+					  });
+					  </script>
 					<button
-						class="btn btn-lg btn-block btn-signin text-uppercase text-white"
+						class="btn btn-lg btn-block btn-signin text-uppercase text-white mt-2"
 						type="submit" style="background: #F5A623">Đăng nhập</button>
-					<hr class="my-4">
-					<button class="btn btn-lg btn-google btn-block text-uppercase"
-						type="submit">
-						<i class="fab fa-google mr-2"></i> Đăng nhập bằng Google
-					</button>
-					<button class="btn btn-lg btn-facebook btn-block text-uppercase"
-						type="submit">
-						<i class="fab fa-facebook-f mr-2"></i> Đăng nhập bằng Facebook
-					</button>
 				</form>
 			</div>
 		</div>

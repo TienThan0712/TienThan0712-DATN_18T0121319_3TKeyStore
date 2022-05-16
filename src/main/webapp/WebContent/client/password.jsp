@@ -64,7 +64,7 @@
 							<ul>
 								<c:forEach items="${dsloai}" var="s">
 									<li class="liheader"><a
-										href="/home/category?ml=${s.getMaloai()}">
+										href="/home/product?ml=${s.getMaloai()}">
 											${s.getTenloai()} </a></li>
 								</c:forEach>
 							</ul>
@@ -102,18 +102,18 @@
 							<div class="offset-md-4 mt-3">
 								<h3 class="account-header">Thông tin tài khoản</h3>
 							</div>
-							<form action="/home/customerDetail?name=btnDoiMK" >
+							<form action="/home/resetPassword" method="post" >
 								<div class="thay-doi-mk">
 									<div class="mkcu my-3">
 										<div class="row">
 											<label class="col-md-2 offset-md-2" for="account-mkcu">Tên đăng nhâp</label> 
-											<input class="col-md-4" type="password" name="PassCu" value="" placeholder="Nhập tên đăng nhập">
+											<input class="col-md-4" type="text" name="user" value="" placeholder="Nhập tên đăng nhập">
 										</div>
 									</div>
 									<div class="mkmoi my-3">
 										<div class="row">
 											<label class="col-md-2 offset-md-2" for="account-mkmoi">Email</label> 
-											<input class="col-md-4" type="password" name="PassMoi" value="" placeholder="Nhập Email">
+											<input class="col-md-4" type="email" name="email" value="" placeholder="Nhập Email">
 										</div>
 									</div>
 									<div class="capnhat my-3">

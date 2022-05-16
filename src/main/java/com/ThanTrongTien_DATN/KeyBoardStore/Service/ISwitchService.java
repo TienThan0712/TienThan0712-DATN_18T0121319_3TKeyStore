@@ -16,5 +16,7 @@ public interface ISwitchService<T> {
 
 	public SwitchModel getMotSwitch(String math);
 
+	public void clearCatche();
+
 
 }

@@ -22,11 +22,11 @@
 							<h6 class="header text-uppercase">Chọn phương thức thanh
 								toán</h6>
 							<div class="option mb-2">
-								<input type="radio" name="ptttcod" id="cod" checked> <label
+								<input type="radio" name="pttt" id="cod" value="cod" checked> <label
 									for="cod">Thanh toán bằng tiền mặt khi nhận hàng</label>
 							</div>
 							<div class="option option2">
-								<input type="radio" name="ptttatm" id="atm"> <label
+								<input type="radio" name="pttt" id="atm" value="atm"> <label
 									for="atm" class="chuyenkhoan">Thanh toán chuyển khoản
 									trước qua Thẻ ATM/Internet Banking</label>
 								<p class="mt-4">- Quý khách chỉ chuyển khoản khi được xác

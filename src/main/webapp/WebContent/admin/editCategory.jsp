@@ -49,11 +49,11 @@
 							<div class="form-group">
 								<label style="color: black; font-size: 20px">Mã thương hiệu sản phẩm</label> <input type="text" name="maloai" class="form-control"
 									id="exampleInputEmail1" readonly="readonly"
-									value="${loaibean.getMaloai() }">
+									value="${CategoryModel.getMaloai() }">
 							</div>
 							<div class="form-group">
 								<label style="color: black; font-size: 20px">Tên thương hiệu sản phẩm</label> <input type="text" name="tenloai" class="form-control"
-									id="exampleInputPassword1" value="${loaibean.getTenloai() }">
+									id="exampleInputPassword1" value="${CategoryModel.getTenloai() }">
 							</div>
 							<button type="submit" name="btnSua" class="btn btn-info"
 								style="background: #F44336">Sửa</button>

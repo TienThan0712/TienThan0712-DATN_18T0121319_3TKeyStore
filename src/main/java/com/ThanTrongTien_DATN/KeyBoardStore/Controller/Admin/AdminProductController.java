@@ -25,8 +25,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ThanTrongTien_DATN.KeyBoardStore.Model.AdminModel;
 import com.ThanTrongTien_DATN.KeyBoardStore.Model.CategoryModel;
 import com.ThanTrongTien_DATN.KeyBoardStore.Model.ProductModel;
+import com.ThanTrongTien_DATN.KeyBoardStore.Model.SwitchModel;
 import com.ThanTrongTien_DATN.KeyBoardStore.Service.ICategoryService;
 import com.ThanTrongTien_DATN.KeyBoardStore.Service.IProductService;
+import com.ThanTrongTien_DATN.KeyBoardStore.Service.ISwitchService;
 
 @Controller
 @RequestMapping("/admin")
@@ -37,6 +39,9 @@ public class AdminProductController {
 	
 	@Autowired
 	private ICategoryService<CategoryModel> category;
+	
+	@Autowired
+	private ISwitchService<SwitchModel> switchkey;
 	
 	@GetMapping("/product")
 	public String ProductView (Model model, HttpServletRequest request) {
@@ -70,7 +75,9 @@ public class AdminProductController {
 		if (ad!=null)
 		{
 			List<CategoryModel> dsloai = category.getLoai();
+			List<SwitchModel> dsswitch = switchkey.getSwitch();
 			model.addAttribute("dsloai", dsloai);
+			model.addAttribute("dsswitch",dsswitch);
 			model.addAttribute("link", "product");
 			model.addAttribute("linkProduct", "addProduct");
 			return "admin/addProduct";
@@ -90,7 +97,7 @@ public class AdminProductController {
 	
 	@PostMapping("/addProduct")
 	public String AddProduct (HttpServletRequest request, HttpServletResponse response, Model model, @Param("masp") String masp,@Param("anhsp") MultipartFile anhsp,@Param("tensp") String tensp,
-			@Param("dongia") String dongia, @Param("giamgia") String giamgia,@Param("maloai") String maloai,@Param("mota") String mota,
+			@Param("dongia") String dongia, @Param("giamgia") String giamgia,@Param("maloai") String maloai,@Param("maswitch") String maswitch,@Param("mota") String mota,
 			@Param("ngaythem") String ngaythem) {
 		HttpSession session = request.getSession();
 		AdminModel ad = (AdminModel)session.getAttribute("ad");
@@ -118,7 +125,7 @@ public class AdminProductController {
 				Date ngay = new java.util.Date();
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 				ngay = format.parse(ngaythem);
-				int kt = product.addProduct(masp, anhUrl, tensp, Long.parseLong(dongia), Integer.parseInt(giamgia), maloai, ngay, mota);
+				int kt = product.addProduct(masp, anhUrl, tensp, Long.parseLong(dongia), Integer.parseInt(giamgia), maloai,maswitch, ngay, mota);
 				product.clearCatche();
 				if (kt==-1)
 				{
@@ -179,8 +186,10 @@ public class AdminProductController {
 		{
 			ProductModel spbean = product.get1sp(masp);
 			List<CategoryModel> dsloai = category.getLoai();
+			List<SwitchModel> dsswitch = switchkey.getSwitch();
 			model.addAttribute("spbean", spbean);
 			model.addAttribute("dsloai", dsloai);
+			model.addAttribute("dsswitch",dsswitch);
 			model.addAttribute("link", "product");
 			model.addAttribute("linkProduct", "productList");
 			return "admin/editProduct";
@@ -200,7 +209,7 @@ public class AdminProductController {
 	
 	@PostMapping("/editProductInfo")
 	public String EditInfoProduct (HttpServletRequest request, Model model, @Param("masp") String masp, @Param("tensp") String tensp,
-			@Param("anhsp") MultipartFile anhsp,@Param("dongia") String dongia, @Param("giamgia") String giamgia,@Param("maloai") String maloai,@Param("mota") String mota,
+			@Param("anhsp") MultipartFile anhsp,@Param("dongia") String dongia, @Param("giamgia") String giamgia,@Param("maloai") String maloai,@Param("maswitch") String maswitch,@Param("mota") String mota,
 			@Param("ngaythem") String ngaythem) throws ParseException {
 		HttpSession session = request.getSession();
 		AdminModel ad = (AdminModel)session.getAttribute("ad");
@@ -213,7 +222,7 @@ public class AdminProductController {
 			{
 				if(anhsp.isEmpty())
 				{
-					product.editProductInfoNotImage(masp, tensp, Long.parseLong(dongia), Integer.parseInt(giamgia), maloai, ngay, mota);
+					product.editProductInfoNotImage(masp, tensp, Long.parseLong(dongia), Integer.parseInt(giamgia), maloai,maswitch, ngay, mota);
 					product.clearCatche();
 					List<ProductModel> dssp = product.getsp();
 					model.addAttribute("tb", "Sửa thông tin sản phẩm thành công");
@@ -233,7 +242,7 @@ public class AdminProductController {
 						e.printStackTrace();
 					}
 					
-				product.editProductInfo(masp,anhUrl ,tensp, Long.parseLong(dongia), Integer.parseInt(giamgia), maloai, ngay, mota);
+				product.editProductInfo(masp,anhUrl ,tensp, Long.parseLong(dongia), Integer.parseInt(giamgia), maloai,maswitch, ngay, mota);
 				product.clearCatche();
 				List<ProductModel> dssp = product.getsp();
 				model.addAttribute("tb", "Sửa thông tin sản phẩm thành công");

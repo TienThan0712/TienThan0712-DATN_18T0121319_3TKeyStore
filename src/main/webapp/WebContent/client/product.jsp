@@ -70,7 +70,7 @@
 								<c:forEach items="${dsloai}" var="s">
 									<li class="liheader"><a href="#"
 										class="header text-uppercase"> <a
-											href="/home/category?ml=${s.getMaloai()}">
+											href="/home/product?ml=${s.getMaloai()}">
 												${s.getTenloai()} </a></li>
 								</c:forEach>
 							</ul>
@@ -119,7 +119,7 @@
 			<div class="thuong-hieu">
 				<ul class="list-unstyled d-flex">
 					<c:forEach items="${dsloai}" var="s">
-						<li><a href="/home/category?ml=${s.getMaloai()}" class="#"
+						<li><a href="/home/product?ml=${s.getMaloai()}" class="#"
 							style="text-decoration: none">
 								<div class="ten">${s.getTenloai()}</div>
 						</a></li>
@@ -135,11 +135,11 @@
 			<div class="noidung bg-white" style="width: 100%;">
 				<div class="header-khoi-sp">
 					<div class="sort d-flex ml-auto mb-3">
-						<form action="/home" style="display:flex;" method="get">
+						<form action="/home/product" style="display:flex;" method="post">
 							<ul class="mr-2">
 								<label for="hienthi-select" class="label-select">Thương hiệu</label>
 								<select class="sapxep-select" name="thuonghieu">
-									<option value="moinhat">Mặc định</option>
+									<option value="">Mặc định</option>
 									<c:forEach items="${dsloai}" var="s">
 										<option value="${s.getMaloai()}">${s.getTenloai()}</option>
 									</c:forEach>
@@ -148,18 +148,20 @@
 							<ul class="mr-2">
 								<label for="hienthi-select" class="label-select">Loại Switch</label>
 								<select class="sapxep-select" name="loai">
-									<option value="moinhat">Mặc định</option>
+									<option value="">Mặc định</option>
 									<c:forEach items="${dsswitch}" var="s">
-										<option value="${s.getMasw()}">${s.getTensw()}</option>
+										<option value="${s.getMaSwitch()}">${s.getTenSwitch()}</option>
 									</c:forEach>
 								</select>
 							</ul>
 							<ul class="mr-2">
 								<label for="hienthi-select" class="label-select">Giá</label>
 								<select class="sapxep-select" name="gia">
-									<option value="moinhat">Dưới 1 triệu</option>
-									<option value="thap-cao">1 triệu -> 2 triệu</option>
-									<option value="cao-thap">Trên 2 triệu</option>
+									<option value="">Mặc định</option>
+									<option value="duoi-1-trieu">Dưới 1 triệu</option>
+									<option value="1-trieu-toi-2-trieu">1 triệu -> 2 triệu</option>
+									<option value="2-trieu-toi-3-trieu">2 triệu -> 3 triệu</option>
+									<option value="tren-3-trieu">Trên 3 triệu</option>
 								</select>
 							</ul>
 									<div class="hien-thi mr-2">

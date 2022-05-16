@@ -28,6 +28,7 @@
 	rel='stylesheet' type='text/css' />
 <link rel="stylesheet"
 	href="<c:url value='/assets/js/Lightweight-Chart/cssCharts.css'/>">
+<script type="text/javascript" src="<c:url value= '/ckeditor/ckeditor.js' />"> </script>
 </head>
 <body>
 	<c:if test="${not empty tb}">
@@ -77,6 +78,15 @@
 								</select>
 							</div>
 							<div class="form-group">
+								<label style="color: black; font-size: 20px">Mã Switch</label> <select
+									class="form-control" required name="maswitch">
+									<c:forEach items="${dsswitch }" var="s">
+										<option value="${s.getMaSwitch() }">${s.getTenSwitch() }
+										</option>
+									</c:forEach>
+								</select>
+							</div>
+							<div class="form-group">
 								<label style="color: black; font-size: 20px">Ngày thêm</label> <input
 									type="date" name="ngaythem" class="form-control"
 									id="exampleInputPassword1" placeholder="Nhập ngày thêm">
@@ -86,10 +96,8 @@
 									sản phẩm</label> <input type="file" name="anhsp" id="anhsp">
 							</div>
 							<div class="form-group">
-								<label style="color: black; font-size: 20px">Mô tả sản
-									phẩm</label>
-								<textarea style="width: 1170px; height: 323px" name="mota"
-									required="required"></textarea>
+								<label style="color: black; font-size: 20px">Mô tả sản phẩm</label> <br>
+								<textarea style="width: 1170px; height: 323px" name="mota" id="mota" required="required"></textarea>
 							</div>
 							<button type="submit" name="btnThem" class="btn btn-info"
 								style="background: #F44336">Thêm</button>
@@ -103,5 +111,12 @@
 		</div>
 	</div>
 	<jsp:include page="layout/script.jsp"></jsp:include>
+	<script type="text/javascript">	
+		var editor='';
+		$(document).ready(function(){
+		  editor = CKEDITOR.replace( 'mota' );
+		});
+		CKEDITOR.replace( 'mota' );
+	</script>
 </body>
 </html>

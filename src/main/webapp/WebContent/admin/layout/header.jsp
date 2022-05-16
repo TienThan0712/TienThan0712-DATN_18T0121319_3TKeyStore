@@ -60,14 +60,14 @@
 								class="fa fa-edit"></i> Thêm thương hiệu </a></li>
 					</ul></li>
 				<li><a href="#"
-					class="${link == 'category' ? 'active-menu' : '' } waves-effect waves-dark"><i
+					class="${link == 'switch' ? 'active-menu' : '' } waves-effect waves-dark"><i
 						class="fa fa-sitemap"></i>Loại Switch<span class="fa arrow"></span></a>
 					<ul class="nav nav-second-level">
-						<li><a href="/admin/brand"
-							class="${linkCategory == 'categoryList' ? 'active-menu' : '' } waves-effect waves-dark"><i
+						<li><a href="/admin/switch"
+							class="${linkSwitch == 'switchList' ? 'active-menu' : '' } waves-effect waves-dark"><i
 								class="fa fa-table"></i> Danh sách Loại Switch</a></li>
-						<li><a href="/admin/addbrand"
-							class="${linkCategory == 'addCategory' ? 'active-menu' : '' } waves-effect waves-dark"><i
+						<li><a href="/admin/addSwitch"
+							class="${linkSwitch == 'addSwitch' ? 'active-menu' : '' } waves-effect waves-dark"><i
 								class="fa fa-edit"></i> Thêm loại Switch </a></li>
 					</ul></li>
 				<li><a href="/admin/customer"
@@ -92,15 +92,15 @@
 								class="fa fa-table"></i>Đơn hàng đã hủy</a></li>
 					</ul></li>
 				<li><a href="#"
-					class="${link == 'order' ? 'active-menu' : '' } waves-effect waves-dark"><i
+					class="${link == 'revenue' ? 'active-menu' : '' } waves-effect waves-dark"><i
 						class="fa fa-table
 						"></i>Doanh thu<span class="fa arrow"></span></a>
 					<ul class="nav nav-second-level">
-						<li><a href="/admin/orderWaiting"
-							class="${linkorder == 'orderWaitingList' ? 'active-menu' : '' } waves-effect waves-dark"><i
+						<li><a href="/admin/revenueMonth"
+							class="${linkRevenue == 'revenueTimeList' ? 'active-menu' : '' } waves-effect waves-dark"><i
 								class="fa fa-table"></i>Doanh thu theo thời gian</a></li>
-						<li><a href="/admin/orderPayment"
-							class="${linkorder == 'orderPaymentList' ? 'active-menu' : '' } waves-effect waves-dark"><i
+						<li><a href="/admin/revenueProduct"
+							class="${linkRevenue == 'revenueProductList' ? 'active-menu' : '' } waves-effect waves-dark"><i
 								class="fa fa-table"></i>Doanh thu theo sản phẩm</a></li>
 					</ul></li>
 			</ul>

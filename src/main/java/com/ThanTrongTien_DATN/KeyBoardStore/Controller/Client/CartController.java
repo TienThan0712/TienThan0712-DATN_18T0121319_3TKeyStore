@@ -132,7 +132,7 @@ public class CartController {
 		        this.emailSender.send(message);
 				CartServiceImpl gh = (CartServiceImpl) session.getAttribute("gh");
 				List<CartModel> giohang = gh.ds;
-				cart.themHoaDondao(kh.getMaKH());
+				cart.themHoaDondao(kh.getMaKH(),gh.TongTien());
 				long maHD = cart.maHDVuaTao();
 				cart.themCTHD(giohang, maHD);
 				request.setAttribute("tb", "Đặt mua thành công");

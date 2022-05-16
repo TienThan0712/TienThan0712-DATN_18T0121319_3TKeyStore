@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -116,5 +117,20 @@ public class CustomerServiceImpl implements ICustomerService<CustomerModel>{
 	@Override
 	public int Xoa (long makh) {
 		return jdbcTemplate.update("Delete KhachHang where MaKH=?",makh);
+	}
+	
+	@Override
+	public int CheckUser (String user, String Email) {
+		String sql = "select count(*) from KhachHang where UserName=? and Email=?";
+		@SuppressWarnings("deprecation")
+		int count = jdbcTemplate.queryForObject(sql,new Object[] {user,Email}, Integer.class);
+		return count;
+	}
+	
+	@Override
+	public int ResetPassword (String user, String Email) {
+		String password = BCrypt.hashpw("123456", BCrypt.gensalt(10));
+		System.out.print(password);
+		return jdbcTemplate.update("update KhachHang set Pass=N'"+password+"' where UserName=? and Email=?",user, Email);
 	}
 }

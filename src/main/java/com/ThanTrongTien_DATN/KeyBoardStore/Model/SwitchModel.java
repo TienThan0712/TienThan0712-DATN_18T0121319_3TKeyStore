@@ -1,29 +1,41 @@
 package com.ThanTrongTien_DATN.KeyBoardStore.Model;
 
-public class SwitchModel {
-	private String masw;
-	private String tensw;
+import java.io.Serializable;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
+
+@RedisHash("switch")
+public class SwitchModel implements Serializable {
+	private static final long serialVersionUID = 1L;
+	@Id
+	private String MaSwitch;
+	private String TenSwitch;
 	public SwitchModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public SwitchModel(String masw, String tensw) {
+	public SwitchModel(String maSwitch, String tenSwitch) {
 		super();
-		this.masw = masw;
-		this.tensw = tensw;
+		MaSwitch = maSwitch;
+		TenSwitch = tenSwitch;
 	}
-	public String getMasw() {
-		return masw;
+	public String getMaSwitch() {
+		return MaSwitch;
 	}
-	public void setMasw(String masw) {
-		this.masw = masw;
+	public void setMaSwitch(String maSwitch) {
+		MaSwitch = maSwitch;
 	}
-	public String getTensw() {
-		return tensw;
+	public String getTenSwitch() {
+		return TenSwitch;
 	}
-	public void setTensw(String tensw) {
-		this.tensw = tensw;
+	public void setTenSwitch(String tenSwitch) {
+		TenSwitch = tenSwitch;
 	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
 	
 	
 }

@@ -79,7 +79,7 @@
 							<ul>
 								<c:forEach items="${dsloai}" var="s">
 									<li class="liheader"><a
-										href="/home/category?ml=${s.getMaloai()}">
+										href="/home/product?ml=${s.getMaloai()}">
 											${s.getTenloai()} </a></li>
 								</c:forEach>
 							</ul>

@@ -8,9 +8,6 @@ import javax.persistence.GenerationType;
 
 import org.springframework.data.annotation.Id;
 
-import groovy.transform.Generated;
-
-
 public class ProductModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -122,6 +119,13 @@ public class ProductModel implements Serializable {
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	@Override
+	public String toString() {
+		return "ProductModel [MaSP=" + MaSP + ", AnhSP=" + AnhSP + ", TenSP=" + TenSP + ", DonGia=" + DonGia
+				+ ", GiamGia=" + GiamGia + ", GiaSale=" + GiaSale + ", MaLoai=" + MaLoai + ", TenLoai=" + TenLoai
+				+ ", MaSwitch=" + MaSwitch + ", TenSwitch=" + TenSwitch + ", NgayThem=" + NgayThem + ", MoTa=" + MoTa
+				+ "]";
 	}
 	
 }

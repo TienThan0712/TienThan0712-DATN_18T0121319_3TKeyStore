@@ -1,6 +1,8 @@
 package com.ThanTrongTien_DATN.KeyBoardStore.Controller.Admin;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -50,6 +52,8 @@ public class AdminOrderController {
 	public String OrderWaitingView (HttpServletRequest request, Model model, @Param("mahd")String mahd, @Param("name") String name) throws MessagingException {
 		HttpSession session = request.getSession();
 		AdminModel ad = (AdminModel)session.getAttribute("ad");
+		Locale localeEN = new Locale("en", "EN");
+		NumberFormat en = NumberFormat.getInstance(localeEN);
 		if (ad!=null)
 		{
 			List<OrderModel> dsdh = order.DonHangChoXN();
@@ -100,17 +104,18 @@ public class AdminOrderController {
 					for (OrderDetailModel ctdh : dsctdh) 
 					{  
 						String html1 =" <tr>\r\n"
-								+ "            <td class=\"center\" style=\" border:1px solid black;\">"+ctdh.getTenSP()+"</td>\r\n"
-								+ "            <td class=\"center\" style=\" border:1px solid black;\">"+ctdh.getSoLuong()+"</td>\r\n"
-								+ "            <td class=\"center\" style=\" border:1px solid black;\">"+ctdh.getThanhTien()+"</td>\r\n"
+								+ "            <td class=\"center\" style=\" border:1px solid black;\"> "+ctdh.getTenSP()+"</td>\r\n"
+								+ "            <td class=\"center\" style=\" border:1px solid black;\"> "+ctdh.getSoLuong()+"</td>\r\n"
+								+ "            <td class=\"center\" style=\" border:1px solid black;\"> "+en.format(ctdh.getThanhTien())+" đ</td>\r\n"
 								+ "        </tr>\r\n" ;
 						html +=html1;
 					}
 					html += "    </table>\r\n"
-							+ "    <h4>Họ tên khách hàng:"+dh.getHoTen()+"</h4>\r\n"
-							+ "    <h4>Ngày mua:"+dh.getNgayMua()+"</h4>\r\n"
-							+ "    <h4>Tổng số tiền:"+dh.getTongTien()+"đ</h4>\r\n"
-							+ "    <h4>Thông tin chuyển khoản: 0385842033</h4>\r\n"
+							+ "    <h4>Họ tên khách hàng: "+dh.getHoTen()+"</h4>\r\n"
+							+ "    <h4>Ngày mua: "+dh.getNgayMua()+"</h4>\r\n"
+							+ "    <h4>Tổng số tiền: "+en.format(dh.getTongTien())+" đ</h4>\r\n"
+							+ "    <h4>Thông tin chuyển khoản: 123456789</h4>\r\n"
+							+ "    <h4>Ngân hàng: VietinBank chi nhánh Huế</h4>\r\n"
 							+ "    <h4>Nội dung chuyển khoản: [Mã hóa đơn] + [Họ tên khách hàng]</h4>\r\n"
 							+ "    <h4>Đơn hàng sẽ được giao đến bạn trong 5-7 ngày</h4>\r\n"
 							+ "    <h4>-----THANK YOU-----</h4>";
@@ -150,6 +155,8 @@ public class AdminOrderController {
 	public String OrderPaymentView (HttpServletRequest request, Model model, @Param("mahd")String mahd, @Param("name") String name) throws MessagingException {
 		HttpSession session = request.getSession();
 		AdminModel ad = (AdminModel)session.getAttribute("ad");
+		Locale localeEN = new Locale("en", "EN");
+		NumberFormat en = NumberFormat.getInstance(localeEN);
 		if (ad!=null)
 		{
 			List<OrderModel> dsdh = order.DonHangChoTT();
@@ -165,10 +172,10 @@ public class AdminOrderController {
 					message.setContent(message, "text/plain; charset=UTF-8");
 					MimeMessageHelper helper = new MimeMessageHelper(message,"UTF-8");
 					String html=" <h4>Đơn hàng của bạn đã được thanh toán</h4>\r\n"
-							+ "    <h4>Thông tin đơn hàng mã:"+dh.getMaHD()+"</h4>\r\n"
+							+ "    <h4>Thông tin đơn hàng mã: "+dh.getMaHD()+"</h4>\r\n"
 							+ "    <h4>Họ tên khách hàng: "+dh.getHoTen()+"</h4>\r\n"
-							+ "    <h4>Ngày mua:"+dh.getNgayMua()+"</h4>\r\n"
-							+ "    <h4>Tổng số tiền:"+dh.getTongTien()+" đ</h4>\r\n"
+							+ "    <h4>Ngày mua: "+dh.getNgayMua()+"</h4>\r\n"
+							+ "    <h4>Tổng số tiền: "+en.format(dh.getTongTien())+" đ</h4>\r\n"
 							+ "    <h4>Đơn hàng sẽ được giao đến bạn trong 5-7 ngày</h4>\r\n"
 							+ "    <h4>-----THANK YOU-----</h4>";
 					message.setContent(html, "text/html; charset=UTF-8");

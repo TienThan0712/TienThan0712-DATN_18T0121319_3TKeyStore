@@ -58,7 +58,8 @@
 											<th class="center">Tên SP</th>
 											<th class="center">Giá</th>
 											<th class="center">Giảm giá</th>
-											<th class="center">Mã thương hiệu</th>
+											<th class="center">Mã TH</th>
+											<th class="center">Mã SW</th>
 											<th class="center">Ngày thêm</th>
 											<th class="center">Hành động</th>
 										</tr>
@@ -76,6 +77,7 @@
 															value="${s.getDonGia()}" />đ</td>
 													<td class="center">${s.getGiamGia()}</td>
 													<td class="center">${s.getMaLoai()}</td>
+													<td class="center">${s.getMaSwitch()}</td>
 													<td class="center">${s.getNgayThem()}</td>
 													<td class="center">
 													<a href="/admin/editProductInfo?masp=${s.getMaSP()}">Sửa thông tin</a> 

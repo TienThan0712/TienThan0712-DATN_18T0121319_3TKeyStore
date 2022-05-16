@@ -79,7 +79,7 @@
 							<ul>
 								<c:forEach items="${dsloai}" var="s">
 									<li class="liheader"><a
-										href="/home/category?ml=${s.getMaloai()}">
+										href="/home/product?ml=${s.getMaloai()}">
 											${s.getTenloai()} </a></li>
 								</c:forEach>
 							</ul>
@@ -225,6 +225,7 @@
 													<th>Mã hóa đơn</th>
 													<th>Tổng tiền</th>
 													<th>Ngày mua</th>
+													<th>Ngày nhận</th>
 													<th>Chi tiết</th>
 													<th>Trạng thái</th>
 												</tr>
@@ -238,6 +239,7 @@
 															<td><fmt:formatNumber type="NUMBER"
 																	value="${s.getTongTien()}" />đ</td>
 															<td>${s.getNgayMua() }</td>
+															<td>${s.getNgayGiaoHang() }</td>
 															<td>
 																<button name="btnChiTiet" type="submit"
 																	class="btn btn-warning" value="XacNhan">Chi

@@ -66,7 +66,7 @@
 								<c:forEach items="${dsloai}" var="s">
 									<li class="liheader"><a href="#"
 										class="header text-uppercase"> <a
-											href="/home/category?ml=${s.getMaloai()}">
+											href="/home/product?ml=${s.getMaloai()}">
 												${s.getTenloai()} </a></li>
 								</c:forEach>
 							</ul>
@@ -190,7 +190,7 @@
 									<span> ${sp.getMoTa()} </span>
 								</p>
 							</div>
-							<div class="tab-pane fade d-none" id="nav-danhgia" role="tabpanel"
+							<div class="tab-pane fade " id="nav-danhgia" role="tabpanel"
 								aria-labelledby="nav-danhgia-tab">
 								<div class="row">
 									<div class="col-md-3 text-center">
@@ -228,32 +228,30 @@
 											<h6 class="tieude text-uppercase">GỬI ĐÁNH GIÁ CỦA BẠN</h6>
 											<span class="danhgiacuaban">Đánh giá của bạn về sản
 												phẩm này:</span>
-											<form action="">
-												<div
-													class="rating d-flex flex-row-reverse align-items-center justify-content-end">
-													<input type="radio" name="star" id="star1"><label
-														for="star1"></label> <input type="radio" name="star"
-														id="star2"><label for="star2"></label> <input
-														type="radio" name="star" id="star3"><label
-														for="star3"></label> <input type="radio" name="star"
-														id="star4"><label for="star4"></label> <input
-														type="radio" name="star" id="star5"><label
-														for="star5"></label>
+											<form action="/home" method="get">
+												<div class="rating d-flex flex-row-reverse align-items-center justify-content-end">
+													<input type="radio" name="star" id="star1">
+														<label for="star1"></label> 
+													<input type="radio" name="star" id="star2">
+														<label for="star2"></label> 
+													<input type="radio" name="star" id="star3">
+														<label for="star3"></label> 
+													<input type="radio" name="star" id="star4">
+														<label for="star4"></label> 
+													<input type="radio" name="star" id="star5">
+														<label for="star5"></label>
 												</div>
 												<div class="form-group">
-													<input type="text" class="txtFullname w-100"
-														placeholder="Mời bạn nhập tên(Bắt buộc)">
+													<input type="text" class="txtFullname w-100" name="user"placeholder="Mời bạn nhập tên(Bắt buộc)">
 												</div>
 												<div class="form-group">
-													<input type="text" class="txtEmail w-100"
-														placeholder="Mời bạn nhập email(Bắt buộc)">
+													<input type="text" class="txtEmail w-100" name="email" placeholder="Mời bạn nhập email(Bắt buộc)">
 												</div>
 												<div class="form-group">
-													<input type="text" class="txtComment w-100"
-														placeholder="Đánh giá của bạn về sản phẩm này">
+													<input type="text" class="txtComment w-100" name="noidung" placeholder="Đánh giá của bạn về sản phẩm này">
 												</div>
 												<div class="btn nutguibl">
-													<button type="button">Gửi bình luận</button>
+													<button type="submit">Gửi bình luận</button>
 												</div>
 											</form>
 										</div>
@@ -277,7 +275,7 @@
 						class="col-12 d-flex justify-content-between align-items-center pb-2 bg-light pt-4">
 						<h5 class="header text-uppercase" style="font-weight: 400;">Sản
 							phẩm cùng thương hiệu</h5>
-						<a href="/home/category?ml=${sp.getMaLoai()}"
+						<a href="/home/product?ml=${sp.getMaLoai()}"
 							class="btn btn-warning btn-sm text-white">Xem tất cả</a>
 					</div>
 				</div>

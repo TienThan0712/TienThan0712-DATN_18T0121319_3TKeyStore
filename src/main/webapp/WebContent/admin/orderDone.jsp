@@ -40,7 +40,7 @@
 	<jsp:include page="layout/header.jsp"></jsp:include>
 	<div id="page-wrapper">
 		<div class="header">
-			<h1 class="page-header">Danh sách đơn hàng</h1>
+			<h1 class="page-header">Danh sách đơn hàng đã giao</h1>
 		</div>
 		<div id="page-inner">
 			<div class="row">
@@ -58,6 +58,7 @@
 											<th class="center">Số ĐT</th>
 											<th class="center">Tổng tiền</th>
 											<th class="center">Ngày mua</th>
+											<th class="center">Ngày nhận</th>
 											<th class="center">Chi tiết</th>
 											<th class="center">Trạng thái</th>
 										</tr>
@@ -71,6 +72,7 @@
 												<td class="center"><fmt:formatNumber type="NUMBER"
 														value="${s.getTongTien()}" />đ</td>
 												<td class="center">${s.getNgayMua()}</td>
+												<td class="center">${s.getNgayGiaoHang()}</td>
 												<td class="center"><a
 													href="/admin/orderDetail?mahd=${s.getMaHD()}&name=btnChiTiet">
 														Chi tiết</a></td>
