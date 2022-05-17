@@ -10,6 +10,7 @@ git clone https://github.com/TienThan0712/TienThan0712-DATN_18T0121319_3TKeyStor
 		- Import project trong Eclip
 		- Sau khi import vào thì chuột phải vào tên project -> maven -> update maven
 		- Chỉnh sửa đường dẫn cơ sở dữ liệu ở file application.properties
+		- Lưu ý: Chạy file redis-server.exe trước
 		- Chạy file main 
 		- Truy cập web: localhost:8080/home
 		- Tài khoản demo:
