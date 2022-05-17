@@ -7,8 +7,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -56,7 +54,7 @@ public class SwitchServiceImpl implements ISwitchService<SwitchModel> {
 		return template.opsForHash().values(HASH_KEY);
 	}
 	
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
 	public int addSwitch(String masw, String tensw) {
 		String sql = "select count(*) from Switch where MaSwitch=?";
@@ -64,11 +62,15 @@ public class SwitchServiceImpl implements ISwitchService<SwitchModel> {
 		if (count >=1){
 			return -1;
 		} else if (count == 0) {
+			SwitchModel sw = new SwitchModel();
+			sw.setMaSwitch(masw);
+			sw.setTenSwitch(tensw);
+			template.opsForHash().put(HASH_KEY,sw.getMaSwitch(),sw);
 			return jdbcTemplate.update("insert into Switch (MaSwitch,TenSwitch) values (?,?)", masw, tensw);
 		} else
 			return 0;
 	}
-	@SuppressWarnings({ "deprecation" })
+	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
 	public int deleteSwitch(String masw) {
 		String sql = "select count(*) from Switch inner join SanPham on Switch.MaSwitch = SanPham.MaSwitch where Switch.MaSwitch = ? ";
@@ -76,12 +78,13 @@ public class SwitchServiceImpl implements ISwitchService<SwitchModel> {
 		if (count >=1){
 			return -1;
 		} else if (count == 0) {
+			template.opsForHash().delete(HASH_KEY,masw);
 			return jdbcTemplate.update("Delete Switch where MaSwitch=?", masw);
 		} else
 			return 0;
 	}
 	
-	@SuppressWarnings({ "deprecation" })
+	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
 	public int editSwitch(String masw, String tensw) {
 		String sql = "select count(*) from Switch where TenSwitch=?";
@@ -89,6 +92,10 @@ public class SwitchServiceImpl implements ISwitchService<SwitchModel> {
 		if (count >= 1){
 			return -1;
 		} else if (count == 0) {
+			SwitchModel sw = new SwitchModel();
+			sw.setMaSwitch(masw);
+			sw.setTenSwitch(tensw);
+			template.opsForHash().put(HASH_KEY,sw.getMaSwitch(),sw);
 			return jdbcTemplate.update("Update Switch SET TenSwitch =? WHERE MaSwitch = ?", tensw,masw);
 		} else
 			return 0;
@@ -100,14 +107,6 @@ public class SwitchServiceImpl implements ISwitchService<SwitchModel> {
 		SwitchModel th = new SwitchModel();
 		String sql="select * from Switch where MaSwitch=?";
 		th= (SwitchModel) jdbcTemplate.queryForObject(sql, new Object[]{masw}, new BeanPropertyRowMapper(SwitchModel.class));
-		System.out.print(th.getMaSwitch());
-		System.out.print(th.getTenSwitch());
-		return th;
-	}
-	
-	@Override
-	@CacheEvict(value = "switch", allEntries = true)
-	public void clearCatche()
-	{
+		return (SwitchModel) template.opsForHash().get(HASH_KEY, th.getMaSwitch());
 	}
 }

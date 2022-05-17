@@ -126,7 +126,6 @@ public class AdminProductController {
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 				ngay = format.parse(ngaythem);
 				int kt = product.addProduct(masp, anhUrl, tensp, Long.parseLong(dongia), Integer.parseInt(giamgia), maloai,maswitch, ngay, mota);
-				product.clearCatche();
 				if (kt==-1)
 				{
 					model.addAttribute("tb", "Mã sản phẩm đã tồn tại");
@@ -223,7 +222,6 @@ public class AdminProductController {
 				if(anhsp.isEmpty())
 				{
 					product.editProductInfoNotImage(masp, tensp, Long.parseLong(dongia), Integer.parseInt(giamgia), maloai,maswitch, ngay, mota);
-					product.clearCatche();
 					List<ProductModel> dssp = product.getsp();
 					model.addAttribute("tb", "Sửa thông tin sản phẩm thành công");
 					model.addAttribute("dssp",dssp);
@@ -243,7 +241,6 @@ public class AdminProductController {
 					}
 					
 				product.editProductInfo(masp,anhUrl ,tensp, Long.parseLong(dongia), Integer.parseInt(giamgia), maloai,maswitch, ngay, mota);
-				product.clearCatche();
 				List<ProductModel> dssp = product.getsp();
 				model.addAttribute("tb", "Sửa thông tin sản phẩm thành công");
 				model.addAttribute("dssp",dssp);
@@ -276,7 +273,6 @@ public class AdminProductController {
 		if (ad!=null)
 		{
 			product.deleteProduct(masp);
-			product.clearCatche();
 			List<ProductModel> dssp = product.getsp();
 			model.addAttribute("dssp",dssp);
 			model.addAttribute("link", "product");

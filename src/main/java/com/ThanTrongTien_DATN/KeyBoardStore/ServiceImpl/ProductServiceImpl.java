@@ -1,5 +1,6 @@
 package com.ThanTrongTien_DATN.KeyBoardStore.ServiceImpl;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -9,17 +10,14 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import com.ThanTrongTien_DATN.KeyBoardStore.Model.CategoryModel;
 import com.ThanTrongTien_DATN.KeyBoardStore.Model.ProductModel;
-import com.ThanTrongTien_DATN.KeyBoardStore.Model.SwitchModel;
 import com.ThanTrongTien_DATN.KeyBoardStore.Service.IProductService;
 
 @Component
@@ -33,8 +31,14 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 	
+public static final String HASH_KEY = "product";
+	
+    @SuppressWarnings("rawtypes")
+	@Autowired
+    private RedisTemplate template;
+	
+	@SuppressWarnings("unchecked")
 	@Override
-	@Cacheable(value = "products")
 	public List<ProductModel> getsp() {
 		String sql = "select MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n"
 				+ "from SanPham as sp inner join LoaiSP as l on sp.MaLoai = l.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch";
@@ -57,16 +61,15 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 				sp.setTenSwitch(rs.getString("TenSwitch"));
 				sp.setNgayThem(rs.getDate("NgayThem"));
 				sp.setMoTa(rs.getString("MoTa"));
+				template.opsForHash().put(HASH_KEY,sp.getMaSP(),sp);
 				return sp;
 			}
 		});
-		System.out.print("lay ds \n");
 		Collections.shuffle(ds);
-		return ds;
+		return template.opsForHash().values(HASH_KEY);
 	}
 
 	@Override
-	@Cacheable(value = "productsNew")
 	public List<ProductModel> getspmoi() {
 		String sql = "select top(12) MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n"
 				+ "from SanPham as sp inner join LoaiSP as l on sp.MaLoai = l.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch order by NgayThem desc";
@@ -125,7 +128,6 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 	}
 
 	@Override
-	@Cacheable(value = "productsHot")
 	public List<ProductModel> getsphot() {
 		String sql = "select top(12) MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n"
 				+ "from SanPham as sp inner join LoaiSP as l on sp.MaLoai = l.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch where GiamGia=25";
@@ -184,7 +186,6 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 	}
 	
 	@Override
-	@Cacheable(value = "productsCategory")
 	public List<ProductModel> getCategory(String MaLoai) {
 		String sql = "select MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n "
 				+ "from SanPham as sp inner join LoaiSP as l on sp.MaLoai = l.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch where sp.MaLoai='"+MaLoai+"'";
@@ -243,7 +244,6 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 	}
 	
 	@Override
-	@Cacheable(value = "products")
 	public List<ProductModel> search(String Key) {
 		String sql = "select MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n "
 				+ "from SanPham as sp inner join freetexttable(SanPham,TenSP,'"+Key+"') as KEY_TBL on sp.MaSP = KEY_TBL.[KEY] inner join LoaiSP on sp.MaLoai = LoaiSP.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch\r\n"
@@ -397,60 +397,96 @@ public class ProductServiceImpl implements IProductService<ProductModel> {
 	
 	@SuppressWarnings({ "deprecation", "unchecked", "rawtypes" })
 	@Override
-	@Cacheable(value = "products", key = "#MaSP")
 	public ProductModel get1sp(String MaSP) {
 		ProductModel sp = new ProductModel();
 		String sql="select MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n "
 				+ "from SanPham as sp inner join LoaiSP as l on sp.MaLoai = l.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch where MaSP=?";
 		sp =  (ProductModel) jdbcTemplate.queryForObject(sql, new Object[] {MaSP}, new BeanPropertyRowMapper(ProductModel.class));
-		Long giasale = (long) (sp.getDonGia() - ( sp.getDonGia() *( (double)sp.getGiamGia()/(double)100)));
-		sp.setGiaSale(giasale);
-		System.out.print("lay ctds \n");
-		return sp;
+		return (ProductModel) template.opsForHash().get(HASH_KEY, sp.getMaSP());
 	}
 	
 	
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
-	@CachePut(value = "products", key = "#MaSP")
 	public int addProduct(String MaSP,String AnhSP,String TenSP, Long DonGia ,Integer GiamGia, String MaLoai,String MaSwitch,java.util.Date NgayThem,String MoTa) {
 		String sql = "select count(*) from SanPham where MaSP=?";
 		int count = jdbcTemplate.queryForObject(sql,new Object[] {MaSP}, Integer.class);
 		if (count >=1){
 			return -1;
 		} else if (count == 0) {
+			ProductModel sp = new ProductModel();
+			sp.setMaSP(MaSP);
+			sp.setAnhSP(AnhSP);
+			sp.setTenSP(TenSP);
+			Long dongia = DonGia;
+			sp.setDonGia(dongia);
+			Integer giamgia = GiamGia;
+			sp.setGiamGia(giamgia);
+			Long giasale = (long) (dongia - ( dongia *( (double)giamgia/(double)100)));
+			sp.setGiaSale(giasale);
+			sp.setMaLoai(MaLoai);
+			sp.setMaSwitch(MaSwitch);
+			java.sql.Date Ngay = new Date(NgayThem.getTime());
+			sp.setNgayThem((Date) Ngay);
+			sp.setMoTa(MoTa);
+			template.opsForHash().put(HASH_KEY,sp.getMaSP(),sp);
 			return jdbcTemplate.update("insert into SanPham (MaSP, AnhSP, TenSP, DonGia, GiamGia, MaLoai,MaSwitch, NgayThem, MoTa) values (?,?,?,?,?,?,?,?,?)", 
 					MaSP, AnhSP, TenSP, DonGia, GiamGia, MaLoai,MaSwitch ,new java.sql.Date(NgayThem.getTime()),MoTa);
 		} else
 			return 0;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	@CacheEvict(value = "products", key = "#MaSP")
 	public int deleteProduct(String MaSP) {
 		int kq = jdbcTemplate.update("Delete SanPham where MaSP=?", MaSP);
+		template.opsForHash().delete(HASH_KEY,MaSP);
 		return kq;
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	@CachePut(value = "products", key = "#MaSP")
 	public int editProductInfo(String MaSP,String AnhSP,String TenSP, Long DonGia ,Integer GiamGia, String MaLoai,String MaSwitch,java.util.Date NgayThem,String MoTa) {
+		ProductModel sp = new ProductModel();
+		sp.setMaSP(MaSP);
+		sp.setAnhSP(AnhSP);
+		sp.setTenSP(TenSP);
+		Long dongia = DonGia;
+		sp.setDonGia(dongia);
+		Integer giamgia = GiamGia;
+		sp.setGiamGia(giamgia);
+		Long giasale = (long) (dongia - ( dongia *( (double)giamgia/(double)100)));
+		sp.setGiaSale(giasale);
+		sp.setMaLoai(MaLoai);
+		sp.setMaSwitch(MaSwitch);
+		java.sql.Date Ngay = new Date(NgayThem.getTime());
+		sp.setNgayThem((Date) Ngay);
+		sp.setMoTa(MoTa);
+		template.opsForHash().put(HASH_KEY,sp.getMaSP(),sp);
 		return jdbcTemplate.update("Update SanPham set TenSP=?, AnhSP=?,DonGia=?, GiamGia=?, MaLoai=?,MaSwitch=?, NgayThem=?, MoTa=? where MaSP=?", 
 				TenSP,AnhSP ,DonGia, GiamGia, MaLoai,MaSwitch ,new java.sql.Date(NgayThem.getTime()),MoTa,MaSP);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	@CachePut(value = "products", key = "#MaSP")
 	public int editProductInfoNotImage(String MaSP,String TenSP, Long DonGia ,Integer GiamGia, String MaLoai,String MaSwitch,java.util.Date NgayThem,String MoTa) {
-		System.out.print("edit product");
+		ProductModel sp = new ProductModel();
+		sp.setMaSP(MaSP);
+		sp.setTenSP(TenSP);
+		Long dongia = DonGia;
+		sp.setDonGia(dongia);
+		Integer giamgia = GiamGia;
+		sp.setGiamGia(giamgia);
+		Long giasale = (long) (dongia - ( dongia *( (double)giamgia/(double)100)));
+		sp.setGiaSale(giasale);
+		sp.setMaLoai(MaLoai);
+		sp.setMaSwitch(MaSwitch);
+		java.sql.Date Ngay = new Date(NgayThem.getTime());
+		sp.setNgayThem((Date) Ngay);
+		sp.setMoTa(MoTa);
+		template.opsForHash().put(HASH_KEY,sp.getMaSP(),sp);
 		return jdbcTemplate.update("Update SanPham set TenSP=?,DonGia=?, GiamGia=?, MaLoai=?,MaSwitch=? ,NgayThem=?, MoTa=? where MaSP=?", 
 				TenSP,DonGia, GiamGia, MaLoai,MaSwitch, new java.sql.Date(NgayThem.getTime()),MoTa,MaSP);
-	}
-	
-	@Override
-	@CacheEvict(value = "products", allEntries = true)
-	public void clearCatche()
-	{
 	}
 }

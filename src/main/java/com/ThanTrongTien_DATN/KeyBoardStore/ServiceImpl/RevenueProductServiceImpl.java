@@ -10,7 +10,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import com.ThanTrongTien_DATN.KeyBoardStore.Model.RevenueMonthModel;
 import com.ThanTrongTien_DATN.KeyBoardStore.Model.RevenueProductModel;
 import com.ThanTrongTien_DATN.KeyBoardStore.Service.IRevenueProductService;
 

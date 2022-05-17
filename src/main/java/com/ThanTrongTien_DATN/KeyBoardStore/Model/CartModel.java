@@ -6,6 +6,7 @@ public class CartModel {
 	private String TenSP;
 	private Long Gia;
 	private Long SoLuong;
+	@SuppressWarnings("unused")
 	private Long ThanhTien;
 	public CartModel() {
 		super();
