@@ -14,4 +14,6 @@ public interface ICategoryService<T> {
 	public int editCategory(String maloai, String tenloai);
 
 	public CategoryModel getMotLoai(String maloai);
+
+	void deletecache();
 }

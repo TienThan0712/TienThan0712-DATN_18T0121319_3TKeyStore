@@ -20,4 +20,5 @@ public interface IProductService<T> {
 	public List<ProductModel> search(String Key);
 	public List<ProductModel> get8Category(String MaLoai);
 	public List<ProductModel> searchBuFilter(List<ProductModel> product, String maThuongHieu, String maSwitch, String giaSP);
+	void deletecache();
 }

@@ -72,7 +72,7 @@ public class AdminSwitchController {
 				if (request.getParameter("btnThem")!=null)
 				{
 					int ktra = switchkey.addSwitch(maswitch, tenswitch);
-					/* switchkey.clearCatche(); */
+					switchkey.deletecache();
 					if (ktra == -1)
 					{
 						model.addAttribute("tb", "Mã switch đã tồn tại");
@@ -144,6 +144,7 @@ public class AdminSwitchController {
 			if (maswitch!=null)
 			{
 				int ktra = switchkey.editSwitch(maswitch, tenswitch);
+				switchkey.deletecache();
 				if (ktra == -1)
 				{
 					model.addAttribute("tb", "Tên Switch đã tồn tại");
@@ -194,7 +195,7 @@ public class AdminSwitchController {
 			if (maswitch!=null)
 			{
 				int ktra = switchkey.deleteSwitch(maswitch);
-				/* switchkey.clearCatche(); */
+				switchkey.deletecache();
 				if (ktra == -1)
 				{
 					model.addAttribute("tb", "Không thể xóa switch đã có sản phẩm");

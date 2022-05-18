@@ -1,5 +1,6 @@
 package com.ThanTrongTien_DATN.KeyBoardStore.Config;
 
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

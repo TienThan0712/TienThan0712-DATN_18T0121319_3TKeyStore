@@ -40,6 +40,7 @@ public class IndexController {
 	@Autowired 
 	private IOrderService<OrderModel> order;
 	
+	
 	@GetMapping("/admin")
 	public String AdminIndex(Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();

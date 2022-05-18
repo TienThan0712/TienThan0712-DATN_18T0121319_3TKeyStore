@@ -14,6 +14,9 @@ public interface ISwitchService<T> {
 
 	public int editSwitch(String math, String tenth);
 
-	public SwitchModel getMotSwitch(String math);
+	
+	public SwitchModel getMotSwitch(String ma);
+
+	void deletecache();
 
 }

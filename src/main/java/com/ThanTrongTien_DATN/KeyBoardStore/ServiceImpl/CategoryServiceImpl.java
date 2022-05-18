@@ -7,6 +7,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -34,6 +37,7 @@ public class CategoryServiceImpl implements ICategoryService<CategoryModel> {
 
 	@SuppressWarnings({ "unchecked", "unused" })
 	@Override
+	@Cacheable(value = "category")
 	public List<CategoryModel> getLoai() {
 		String sql = "select * from LoaiSP";
 		List<CategoryModel> sps = jdbcTemplate.query(sql, new RowMapper<CategoryModel>() {
@@ -51,6 +55,7 @@ public class CategoryServiceImpl implements ICategoryService<CategoryModel> {
 
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
+	@CachePut(value="category")
 	public int addCategory(String maloai, String tenloai) {
 		String sql = "select count(*) from LoaiSP where MaLoai=?";
 		int count = jdbcTemplate.queryForObject(sql, new Object[] { maloai }, Integer.class);
@@ -68,6 +73,7 @@ public class CategoryServiceImpl implements ICategoryService<CategoryModel> {
 
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
+	@CacheEvict(value = "category", key = "#maloai")
 	public int deleteCategory(String maloai) {
 		String sql = "select count(*) from LoaiSP inner join SanPham on LoaiSP.MaLoai = SanPham.MaLoai where LoaiSP.MaLoai = ? ";
 		int count = jdbcTemplate.queryForObject(sql, new Object[] { maloai }, Integer.class);
@@ -82,6 +88,7 @@ public class CategoryServiceImpl implements ICategoryService<CategoryModel> {
 
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
+	@CachePut(value="category")
 	public int editCategory(String maloai, String tenloai) {
 		String sql = "select count(*) from LoaiSP where TenLoai=?";
 		int count = jdbcTemplate.queryForObject(sql, new Object[] { tenloai }, Integer.class);
@@ -99,11 +106,17 @@ public class CategoryServiceImpl implements ICategoryService<CategoryModel> {
 
 	@SuppressWarnings({ "deprecation", "rawtypes", "unchecked" })
 	@Override
+	@Cacheable(value = "category", key = "#maloai")
 	public CategoryModel getMotLoai(String maloai) {
 		CategoryModel loai = new CategoryModel();
 		String sql = "select * from LoaiSP where MaLoai=?";
 		loai = (CategoryModel) jdbcTemplate.queryForObject(sql, new Object[] { maloai },
 				new BeanPropertyRowMapper(CategoryModel.class));
 		return (CategoryModel) template.opsForHash().get(HASH_KEY, loai.getMaloai());
+	}
+	@Override
+	@CacheEvict(value = "category", allEntries = true)
+	public void deletecache()
+	{
 	}
 }

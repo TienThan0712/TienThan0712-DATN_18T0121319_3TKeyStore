@@ -6,24 +6,28 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import com.ThanTrongTien_DATN.KeyBoardStore.Model.SwitchModel;
 import com.ThanTrongTien_DATN.KeyBoardStore.Service.ISwitchService;
 
 @Component
 @Repository
-@EnableCaching
+@Service
 public class SwitchServiceImpl implements ISwitchService<SwitchModel> {
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(SwitchServiceImpl.class);
+	
 	private JdbcTemplate jdbcTemplate;
 	
 	public SwitchServiceImpl(JdbcTemplate jdbcTemplate) {
@@ -38,6 +42,8 @@ public class SwitchServiceImpl implements ISwitchService<SwitchModel> {
 	
 	@SuppressWarnings({ "unchecked", "unused" })
 	@Override
+	
+	@Cacheable(value = "switch")
 	public List<SwitchModel> getSwitch() {
 		String sql = "select * from Switch";
 		List<SwitchModel> sps = jdbcTemplate.query(sql, new RowMapper<SwitchModel>() {
@@ -51,11 +57,13 @@ public class SwitchServiceImpl implements ISwitchService<SwitchModel> {
 				return th;
 			}
 		});
+		System.out.print("lay ds");
 		return template.opsForHash().values(HASH_KEY);
 	}
 	
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
+	@CachePut(value="switch")
 	public int addSwitch(String masw, String tensw) {
 		String sql = "select count(*) from Switch where MaSwitch=?";
 		int count = jdbcTemplate.queryForObject(sql,new Object[] {masw}, Integer.class);
@@ -72,6 +80,7 @@ public class SwitchServiceImpl implements ISwitchService<SwitchModel> {
 	}
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
+	@CacheEvict(value = "switch", key = "#masw")
 	public int deleteSwitch(String masw) {
 		String sql = "select count(*) from Switch inner join SanPham on Switch.MaSwitch = SanPham.MaSwitch where Switch.MaSwitch = ? ";
 		int count = jdbcTemplate.queryForObject(sql,new Object[] {masw}, Integer.class);
@@ -86,6 +95,7 @@ public class SwitchServiceImpl implements ISwitchService<SwitchModel> {
 	
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
+	@CachePut(value="switch")
 	public int editSwitch(String masw, String tensw) {
 		String sql = "select count(*) from Switch where TenSwitch=?";
 		int count = jdbcTemplate.queryForObject(sql,new Object[] {tensw}, Integer.class);
@@ -103,10 +113,17 @@ public class SwitchServiceImpl implements ISwitchService<SwitchModel> {
 	
 	@SuppressWarnings({ "deprecation", "rawtypes", "unchecked" })
 	@Override
+	@Cacheable(value = "switch", key="#masw")
 	public SwitchModel getMotSwitch (String masw) {
 		SwitchModel th = new SwitchModel();
 		String sql="select * from Switch where MaSwitch=?";
 		th= (SwitchModel) jdbcTemplate.queryForObject(sql, new Object[]{masw}, new BeanPropertyRowMapper(SwitchModel.class));
+		System.out.print("ctsp ");
 		return (SwitchModel) template.opsForHash().get(HASH_KEY, th.getMaSwitch());
+	}
+	@Override
+	@CacheEvict(value = "switch", allEntries = true)
+	public void deletecache()
+	{
 	}
 }

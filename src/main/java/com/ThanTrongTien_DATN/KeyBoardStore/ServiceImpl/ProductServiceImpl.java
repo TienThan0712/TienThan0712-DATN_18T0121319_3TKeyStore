@@ -11,6 +11,9 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -39,6 +42,7 @@ public static final String HASH_KEY = "product";
 	
 	@SuppressWarnings("unchecked")
 	@Override
+	@Cacheable(value="product")
 	public List<ProductModel> getsp() {
 		String sql = "select MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n"
 				+ "from SanPham as sp inner join LoaiSP as l on sp.MaLoai = l.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch";
@@ -70,6 +74,7 @@ public static final String HASH_KEY = "product";
 	}
 
 	@Override
+	@Cacheable(value="productNew")
 	public List<ProductModel> getspmoi() {
 		String sql = "select top(12) MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n"
 				+ "from SanPham as sp inner join LoaiSP as l on sp.MaLoai = l.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch order by NgayThem desc";
@@ -99,6 +104,7 @@ public static final String HASH_KEY = "product";
 	}
 
 	@Override
+	@Cacheable(value="productNew")
 	public List<ProductModel> get8spmoi() {
 		String sql = "select top(8) MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n "
 				+ "from SanPham as sp inner join LoaiSP as l on sp.MaLoai = l.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch order by NgayThem desc";
@@ -128,6 +134,7 @@ public static final String HASH_KEY = "product";
 	}
 
 	@Override
+	@Cacheable(value="productHot")
 	public List<ProductModel> getsphot() {
 		String sql = "select top(12) MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n"
 				+ "from SanPham as sp inner join LoaiSP as l on sp.MaLoai = l.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch where GiamGia=25";
@@ -157,6 +164,7 @@ public static final String HASH_KEY = "product";
 	}
 
 	@Override
+	@Cacheable(value="productHot")
 	public List<ProductModel> get8sphot() {
 		String sql = "select top(8) MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n "
 				+ "from SanPham as sp inner join LoaiSP as l on sp.MaLoai = l.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch where GiamGia=25";
@@ -186,6 +194,7 @@ public static final String HASH_KEY = "product";
 	}
 	
 	@Override
+	@Cacheable(value="productCategory", key="#MaLoai")
 	public List<ProductModel> getCategory(String MaLoai) {
 		String sql = "select MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n "
 				+ "from SanPham as sp inner join LoaiSP as l on sp.MaLoai = l.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch where sp.MaLoai='"+MaLoai+"'";
@@ -215,6 +224,7 @@ public static final String HASH_KEY = "product";
 	}
 	
 	@Override
+	@Cacheable(value="productCategory", key="#MaLoai")
 	public List<ProductModel> get8Category(String MaLoai) {
 		String sql = "select top(8) MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n "
 				+ "from SanPham as sp inner join LoaiSP as l on sp.MaLoai = l.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch where sp.MaLoai='"+MaLoai+"'";
@@ -246,7 +256,7 @@ public static final String HASH_KEY = "product";
 	@Override
 	public List<ProductModel> search(String Key) {
 		String sql = "select MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n "
-				+ "from SanPham as sp inner join freetexttable(SanPham,TenSP,'"+Key+"') as KEY_TBL on sp.MaSP = KEY_TBL.[KEY] inner join LoaiSP on sp.MaLoai = LoaiSP.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch\r\n"
+				+ "from SanPham as sp inner join freetexttable(SanPham,TenSP,'*"+Key+"*') as KEY_TBL on sp.MaSP = KEY_TBL.[KEY] inner join LoaiSP on sp.MaLoai = LoaiSP.MaLoai inner join Switch as s on sp.MaSwitch=s.MaSwitch\r\n"
 				+ "order by KEY_TBL.RANK DESC\r\n"
 				+ "";
 		List<ProductModel> ds = jdbcTemplate.query(sql, new RowMapper<ProductModel>() {
@@ -397,6 +407,7 @@ public static final String HASH_KEY = "product";
 	
 	@SuppressWarnings({ "deprecation", "unchecked", "rawtypes" })
 	@Override
+	@Cacheable(value="product", key="#MaSP")
 	public ProductModel get1sp(String MaSP) {
 		ProductModel sp = new ProductModel();
 		String sql="select MaSP,AnhSP,TenSP,DonGia,GiamGia,sp.MaLoai,sp.MaSwitch, NgayThem, SoLuong, MoTa, TenLoai, TenSwitch \r\n "
@@ -408,6 +419,7 @@ public static final String HASH_KEY = "product";
 	
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
+	@CachePut(value = "product")
 	public int addProduct(String MaSP,String AnhSP,String TenSP, Long DonGia ,Integer GiamGia, String MaLoai,String MaSwitch,java.util.Date NgayThem,String MoTa) {
 		String sql = "select count(*) from SanPham where MaSP=?";
 		int count = jdbcTemplate.queryForObject(sql,new Object[] {MaSP}, Integer.class);
@@ -438,6 +450,7 @@ public static final String HASH_KEY = "product";
 	
 	@SuppressWarnings("unchecked")
 	@Override
+	@CacheEvict(value = "product", key ="#MaSP")
 	public int deleteProduct(String MaSP) {
 		int kq = jdbcTemplate.update("Delete SanPham where MaSP=?", MaSP);
 		template.opsForHash().delete(HASH_KEY,MaSP);
@@ -447,6 +460,7 @@ public static final String HASH_KEY = "product";
 	
 	@SuppressWarnings("unchecked")
 	@Override
+	@CachePut(value = "product")
 	public int editProductInfo(String MaSP,String AnhSP,String TenSP, Long DonGia ,Integer GiamGia, String MaLoai,String MaSwitch,java.util.Date NgayThem,String MoTa) {
 		ProductModel sp = new ProductModel();
 		sp.setMaSP(MaSP);
@@ -470,6 +484,7 @@ public static final String HASH_KEY = "product";
 	
 	@SuppressWarnings("unchecked")
 	@Override
+	@CachePut(value = "product")
 	public int editProductInfoNotImage(String MaSP,String TenSP, Long DonGia ,Integer GiamGia, String MaLoai,String MaSwitch,java.util.Date NgayThem,String MoTa) {
 		ProductModel sp = new ProductModel();
 		sp.setMaSP(MaSP);
@@ -488,5 +503,10 @@ public static final String HASH_KEY = "product";
 		template.opsForHash().put(HASH_KEY,sp.getMaSP(),sp);
 		return jdbcTemplate.update("Update SanPham set TenSP=?,DonGia=?, GiamGia=?, MaLoai=?,MaSwitch=? ,NgayThem=?, MoTa=? where MaSP=?", 
 				TenSP,DonGia, GiamGia, MaLoai,MaSwitch, new java.sql.Date(NgayThem.getTime()),MoTa,MaSP);
+	}
+	@Override
+	@CacheEvict(value = "product", allEntries = true)
+	public void deletecache()
+	{
 	}
 }

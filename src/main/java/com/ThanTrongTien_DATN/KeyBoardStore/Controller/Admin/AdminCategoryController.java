@@ -69,6 +69,7 @@ public class AdminCategoryController {
 				if (request.getParameter("btnThem")!=null)
 				{
 					int ktra = category.addCategory(maloai, tenloai);
+					category.deletecache();
 					if (ktra == -1)
 					{
 						model.addAttribute("tb", "Mã thương hiệu đã tồn tại");
@@ -140,6 +141,7 @@ public class AdminCategoryController {
 			if (maloai!=null)
 			{
 				int ktra = category.editCategory(maloai, tenloai);
+				category.deletecache();
 				if (ktra == -1)
 				{
 					model.addAttribute("tb", "Tên thương hiệu đã tồn tại");
@@ -190,6 +192,7 @@ public class AdminCategoryController {
 			if (maloai!=null)
 			{
 				int ktra = category.deleteCategory(maloai);
+				category.deletecache();
 				if (ktra == -1)
 				{
 					model.addAttribute("tb", "Không thể xóa thương hiệu đã có sản phẩm");
