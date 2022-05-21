@@ -4,32 +4,42 @@ import java.sql.Date;
 
 public class OrderModel {
 	private Long MaHD;
+	private String Email;
 	private String HoTen;
 	private String SoDT;
 	private Long TongTien;
 	private Date NgayMua;
 	private Date NgayGiaoHang;
 	private Integer TrangThai;
+	private String PTTT;
 	public OrderModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public OrderModel(Long maHD, String hoTen, String soDT, Long tongTien, Date ngayMua, Date ngayGiaoHang,
-			Integer trangThai) {
+	public OrderModel(Long maHD, String email, String hoTen, String soDT, Long tongTien, Date ngayMua,
+			Date ngayGiaoHang, Integer trangThai, String pTTT) {
 		super();
 		MaHD = maHD;
+		Email = email;
 		HoTen = hoTen;
 		SoDT = soDT;
 		TongTien = tongTien;
 		NgayMua = ngayMua;
 		NgayGiaoHang = ngayGiaoHang;
 		TrangThai = trangThai;
+		PTTT = pTTT;
 	}
 	public Long getMaHD() {
 		return MaHD;
 	}
 	public void setMaHD(Long maHD) {
 		MaHD = maHD;
+	}
+	public String getEmail() {
+		return Email;
+	}
+	public void setEmail(String email) {
+		Email = email;
 	}
 	public String getHoTen() {
 		return HoTen;
@@ -66,6 +76,12 @@ public class OrderModel {
 	}
 	public void setTrangThai(Integer trangThai) {
 		TrangThai = trangThai;
+	}
+	public String getPTTT() {
+		return PTTT;
+	}
+	public void setPTTT(String pTTT) {
+		PTTT = pTTT;
 	}
 	
 }

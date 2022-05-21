@@ -55,12 +55,12 @@ public class LoginController {
 
 	@GetMapping("/login")
 	public String Login(HttpServletRequest request, HttpServletResponse reponse,
-			@RequestParam(value = "g-recaptcha-response") String capChaResponse, @Param("user") String user,
+			@RequestParam(value = "g-recaptcha-response") String capChaResponse, @Param("email") String email,
 			@Param("pass") String pass, @Param("check") String check, Model model) {
 		HttpSession session = request.getSession();
-		CustomerModel kh = customer.ktdn(user);
-		AdminModel ad = admin.ktdn(user);
-		if (user != null) {
+		CustomerModel kh = customer.ktdn(email);
+		AdminModel ad = admin.ktdn(email);
+		if (email != null) {
 			if (kh != null) {
 				if (!capchaService.verifyGoogleCapcha(capChaResponse)) {
 					request.setAttribute("tb", "Google Capcha Fail");
@@ -73,15 +73,29 @@ public class LoginController {
 					return "client/index";
 				}
 				if (BCrypt.checkpw(pass, kh.getPass())) {
-					session.setAttribute("kh", kh);
-					if (check != null && check.equals("on")) {
-						Cookie username = new Cookie("username", kh.getUserName());
-						username.setMaxAge(7 * 24 * 60 * 60);
-						username.setSecure(true);
-						username.setHttpOnly(true);
-						reponse.addCookie(username);
+					if (kh.getTrangThai() == 1)
+					{
+						session.setAttribute("kh", kh);
+						if (check != null && check.equals("on")) {
+							Cookie username = new Cookie("username", kh.getEmail());
+							username.setMaxAge(7 * 24 * 60 * 60);
+							username.setSecure(true);
+							username.setHttpOnly(true);
+							reponse.addCookie(username);
+						}
+						return "redirect:/home";
 					}
-					return "redirect:/home";
+					else 
+					{
+						request.setAttribute("tb", "Tài khoản của bạn đã bị khóa");
+						List<CategoryModel> dsloai = category.getLoai();
+						List<ProductModel> dsspmoi = product.get8spmoi();
+						List<ProductModel> dssphot = product.get8sphot();
+						model.addAttribute("dsloai", dsloai);
+						model.addAttribute("dsspmoi", dsspmoi);
+						model.addAttribute("dssphot", dssphot);
+						return "client/index";
+					}
 				} else {
 					request.setAttribute("tb", "Tài khoản hoặc mật khẩu sai");
 					List<CategoryModel> dsloai = category.getLoai();
@@ -124,11 +138,11 @@ public class LoginController {
 	}
 
 	@PostMapping("/loginCart")
-	public String LoginCart(HttpServletRequest request, HttpServletResponse reponse, @Param("user") String user,
+	public String LoginCart(HttpServletRequest request, HttpServletResponse reponse, @Param("email") String email,
 			@Param("pass") String pass,@RequestParam(value = "g-recaptcha-response") String capChaResponse, Model model) {
 		HttpSession session = request.getSession();
-		CustomerModel kh = customer.ktdn(user);
-		if (user != null) {
+		CustomerModel kh = customer.ktdn(email);
+		if (email != null) {
 			if (!capchaService.verifyGoogleCapcha(capChaResponse)) {
 				request.setAttribute("tb", "Google Capcha Fail");
 				List<CategoryModel> dsloai = category.getLoai();
@@ -145,7 +159,7 @@ public class LoginController {
 					return "redirect:/home/cart";
 				} else {
 					request.setAttribute("tb", "Tài khoản hoặc mật khẩu sai");
-					return "redirect:/admin";
+					return "redirect:/home/cart";
 				}
 			} else {
 				request.setAttribute("tb", "Tài khoản hoặc mật khẩu sai");
@@ -162,27 +176,33 @@ public class LoginController {
 	}
 
 	@PostMapping("/resetPassword")
-	public String ResetPass(HttpServletRequest request, HttpServletResponse reponse, @Param("user") String user,
+	public String ResetPass(HttpServletRequest request, HttpServletResponse reponse,
 			@Param("email") String email, Model model) throws MessagingException {
-		int count = customer.CheckUser(user, email);
+		int count = customer.CheckUser(email);
 		if (count >= 1) {
-			customer.ResetPassword(user, email);
+			customer.ResetPassword(email);
 			MimeMessage message = emailSender.createMimeMessage();
 			message.setContent(message, "text/plain; charset=UTF-8");
 			MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
-			String html = " <h4>Mật khẩu của bạn đã được đặt lại thành công</h4>\r\n" + "    <h4>Tên tài khoản: " + user
+			String html = " <h4>Mật khẩu của bạn đã được đặt lại thành công</h4>\r\n"
 					+ "</h4>\r\n" + "    <h4>Mật khẩu: 123456</h4>\r\n"
 					+ "    <h4>Chú ý thay đổi sang mật khẩu khác sau khi đăng nhập vào website</h4>\r\n"
 					+ "    <h4>-----THANK YOU-----</h4>";
 			message.setContent(html, "text/html; charset=UTF-8");
-
 			helper.setTo(email);
-
 			helper.setSubject("XÁC NHẬN QUÊN MẬT KHẨU");
-
 			this.emailSender.send(message);
+			request.setAttribute("tb", "Xác nhận quên mật khẩu. Vui lòng kiểm tra Email");
+			List<ProductModel> dsspmoi = product.get8spmoi();
+			List<ProductModel> dssphot = product.get8sphot();
+			List<CategoryModel> dsloai = category.getLoai();
+			model.addAttribute("dsloai", dsloai);
+			model.addAttribute("dsspmoi", dsspmoi);
+			model.addAttribute("dssphot", dssphot);
+			return "client/index";
+			
 		} else {
-			request.setAttribute("tb", "Tên đăng nhập hoặc Email bị sai");
+			request.setAttribute("tb", "Email bị sai");
 		}
 		List<CategoryModel> dsloai = category.getLoai();
 		model.addAttribute("dsloai", dsloai);

@@ -1,5 +1,4 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <!DOCTYPE html>
@@ -40,7 +39,7 @@
 	<jsp:include page="layout/header.jsp"></jsp:include>
 	<div id="page-wrapper">
 		<div class="header">
-			<h1 class="page-header">Danh sách đơn hàng chờ thanh toán</h1>
+			<h1 class="page-header">Danh sách khách hàng</h1>
 		</div>
 		<div id="page-inner">
 			<div class="row">
@@ -53,37 +52,33 @@
 									id="dataTables-example">
 									<thead>
 										<tr>
-											<th class="center">Mã hóa đơn</th>
-											<th class="center">Họ tên KH</th>
-											<th class="center">Số ĐT</th>
-											<th class="center">Tổng tiền</th>
-											<th class="center">Ngày mua</th>
-											<th class="center">Phuơng thức thanh toán</th>
-											<th class="center">Chi tiết</th>
-											<th class="center">Trạng thái</th>
+											<th class="center">Mã SP</th>
+											<th class="center">Mã KH</th>
+											<th class="center">Tên KH</th>
+											<th class="center">Nội dung</th>
+											<th class="center">Ngày thêm</th>
+											<th class="center">Hành động</th>
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach items="${dsdh}" var="s">
-											<tr>
-												<td class="center">${s.getMaHD()}</td>
-												<td class="center">${s.getHoTen()}</td>
-												<td class="center">${s.getSoDT()}</td>
-												<td class="center"><fmt:formatNumber type="NUMBER"
-														value="${s.getTongTien()}" />đ</td>
-												<td class="center">${s.getNgayMua()}</td>
-												<td>${s.getPTTT() }</td>
-												<td class="center"><a
-													href="/admin/orderDetail?mahd=${s.getMaHD()}&name=btnChiTiet">
-														Chi tiết</a></td>
-												<td class="center"><a
-													href="/admin/orderPayment?mahd=${s.getMaHD()}&name=btnXNTT">Xác
-														nhận thanh toán</a></td>
-											</tr>
+										<c:forEach items="${dsComment}" var="s">
+											<form>
+												<tr class="">
+													<td class="center">${s.getMaSP()}</td>
+													<td class="center">${s.getMaKhachHang()}</td>
+													<td class="center">${s.getHoTen()}</td>
+													<td class="center">${s.getNoiDung()}</td>
+													<td class="center">${s.getNgayThem()}</td>
+													<td class="center"><a
+														href="/admin/productComment?maComment=${s.getMaDanhGia()}&name=btnXoa">Xóa</a>
+													</td>
+												</tr>
+											</form>
 										</c:forEach>
 									</tbody>
 								</table>
 							</div>
+
 						</div>
 					</div>
 				</div>

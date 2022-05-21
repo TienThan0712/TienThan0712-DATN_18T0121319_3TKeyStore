@@ -5,9 +5,6 @@ import java.io.Serializable;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Entity;
-
 @RedisHash("switch")
 public class SwitchModel implements Serializable {
 	private static final long serialVersionUID = 1L;

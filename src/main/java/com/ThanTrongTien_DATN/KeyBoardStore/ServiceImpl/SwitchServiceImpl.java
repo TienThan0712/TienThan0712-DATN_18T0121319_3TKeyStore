@@ -82,7 +82,9 @@ public class SwitchServiceImpl implements ISwitchService<SwitchModel> {
 	@Override
 	@CacheEvict(value = "switch", key = "#masw")
 	public int deleteSwitch(String masw) {
-		String sql = "select count(*) from Switch inner join SanPham on Switch.MaSwitch = SanPham.MaSwitch where Switch.MaSwitch = ? ";
+		String sql = "select count(*) from Switch \r\n"
+				+ "inner join SanPham on Switch.MaSwitch = SanPham.MaSwitch \r\n "
+				+ "where Switch.MaSwitch = ? ";
 		int count = jdbcTemplate.queryForObject(sql,new Object[] {masw}, Integer.class);
 		if (count >=1){
 			return -1;
@@ -117,10 +119,13 @@ public class SwitchServiceImpl implements ISwitchService<SwitchModel> {
 	public SwitchModel getMotSwitch (String masw) {
 		SwitchModel th = new SwitchModel();
 		String sql="select * from Switch where MaSwitch=?";
-		th= (SwitchModel) jdbcTemplate.queryForObject(sql, new Object[]{masw}, new BeanPropertyRowMapper(SwitchModel.class));
+		th= (SwitchModel) jdbcTemplate.queryForObject(sql, new Object[]{masw}, 
+				new BeanPropertyRowMapper(SwitchModel.class));
 		System.out.print("ctsp ");
 		return (SwitchModel) template.opsForHash().get(HASH_KEY, th.getMaSwitch());
 	}
+	
+	
 	@Override
 	@CacheEvict(value = "switch", allEntries = true)
 	public void deletecache()

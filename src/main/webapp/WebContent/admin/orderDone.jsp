@@ -53,12 +53,13 @@
 									id="dataTables-example">
 									<thead>
 										<tr>
-											<th class="center">Mã hóa đơn</th>
+											<th class="center">Mã HĐ</th>
 											<th class="center">Họ tên KH</th>
 											<th class="center">Số ĐT</th>
 											<th class="center">Tổng tiền</th>
 											<th class="center">Ngày mua</th>
 											<th class="center">Ngày nhận</th>
+											<th class="center">Phuơng thức thanh toán</th>
 											<th class="center">Chi tiết</th>
 											<th class="center">Trạng thái</th>
 										</tr>
@@ -73,6 +74,7 @@
 														value="${s.getTongTien()}" />đ</td>
 												<td class="center">${s.getNgayMua()}</td>
 												<td class="center">${s.getNgayGiaoHang()}</td>
+												<td>${s.getPTTT() }</td>
 												<td class="center"><a
 													href="/admin/orderDetail?mahd=${s.getMaHD()}&name=btnChiTiet">
 														Chi tiết</a></td>

@@ -45,11 +45,10 @@
 	src="<c:url value='/slick/slick.min.js'/>"></script>
 <script type="text/javascript"
 	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
-<link rel="canonical" href="http://dealbook.xyz/">
 <meta name="google-site-verification"
 	content="urDZLDaX8wQZ_-x8ztGIyHqwUQh2KRHvH9FhfoGtiEw" />
-<link rel="manifest"
-	href="<c:url value='/favicon_io/site.webmanifest'/>">
+
+
 </head>
 <body>
 	<%
@@ -135,6 +134,7 @@
 													<th>Mã hóa đơn</th>
 													<th>Tổng tiền</th>
 													<th>Ngày mua</th>
+													<th>Phuơng thức thanh toán</th>
 													<th>Chi tiết</th>
 													<th>Hành động</th>
 												</tr>
@@ -148,6 +148,7 @@
 															<td><fmt:formatNumber type="NUMBER"
 																	value="${s.getTongTien()}" />đ</td>
 															<td>${s.getNgayMua() }</td>
+															<td>${s.getPTTT() }</td>
 															<td>
 																<button name="btnChiTiet" type="submit"
 																	class="btn btn-warning" value="XacNhan">Chi
@@ -182,6 +183,7 @@
 													<th>Mã hóa đơn</th>
 													<th>Tổng tiền</th>
 													<th>Ngày mua</th>
+													<th>Phuơng thức thanh toán</th>
 													<th>Chi tiết</th>
 												</tr>
 											</thead>
@@ -194,6 +196,7 @@
 															<td><fmt:formatNumber type="NUMBER"
 																	value="${s.getTongTien()}" />đ</td>
 															<td>${s.getNgayMua() }</td>
+															<td>${s.getPTTT() }</td>
 															<td>
 																<button name="btnChiTiet" type="submit"
 																	class="btn btn-warning" value="XacNhan">Chi
@@ -226,6 +229,7 @@
 													<th>Tổng tiền</th>
 													<th>Ngày mua</th>
 													<th>Ngày nhận</th>
+													<th>Phuơng thức thanh toán</th>
 													<th>Chi tiết</th>
 													<th>Trạng thái</th>
 												</tr>
@@ -240,6 +244,7 @@
 																	value="${s.getTongTien()}" />đ</td>
 															<td>${s.getNgayMua() }</td>
 															<td>${s.getNgayGiaoHang() }</td>
+															<td>${s.getPTTT() }</td>
 															<td>
 																<button name="btnChiTiet" type="submit"
 																	class="btn btn-warning" value="XacNhan">Chi
@@ -280,6 +285,7 @@
 													<th>Mã hóa đơn</th>
 													<th>Tổng tiền</th>
 													<th>Ngày mua</th>
+													<th>Phuơng thức thanh toán</th>
 													<th>Chi tiết</th>
 												</tr>
 											</thead>
@@ -292,6 +298,7 @@
 															<td><fmt:formatNumber type="NUMBER"
 																	value="${s.getTongTien()}" />đ</td>
 															<td>${s.getNgayMua() }</td>
+															<td>${s.getPTTT() }</td>
 															<td>
 																<button name="btnChiTiet" type="submit"
 																	class="btn btn-warning" value="XacNhan">Chi

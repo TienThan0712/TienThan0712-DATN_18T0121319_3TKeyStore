@@ -109,7 +109,7 @@ public class CartController {
 	}
 	
 	@RequestMapping(value = "/cartSubmit", method = {RequestMethod.GET, RequestMethod.POST})
-	public String CartSubmit(HttpServletRequest request, HttpServletResponse respone) throws MessagingException {
+	public String CartSubmit(HttpServletRequest request, HttpServletResponse respone, @Param("pttt") String pttt) throws MessagingException {
 		HttpSession session = request.getSession();
 		CustomerModel kh = (CustomerModel) session.getAttribute("kh");
 		if (kh!=null)
@@ -120,7 +120,7 @@ public class CartController {
 				message.setContent(message, "text/plain; charset=UTF-8");
 				MimeMessageHelper helper = new MimeMessageHelper(message,"UTF-8");
 				String html=" <h4>Đơn hàng của bạn đã được đặt thành công</h4>\r\n"
-						+ "    <h4>Chúng tôi sẽ xác nhận và đơn hàng sẽ giao đến bạn trong 5-7 tới</h4>\r\n"
+						+ "    <h4>Chúng tôi sẽ xác nhận và đơn hàng sẽ giao đến bạn trong 5 đến 7 ngày tới</h4>\r\n"
 						+ "    <h4>-----THANK YOU-----</h4>";
 				message.setContent(html, "text/html; charset=UTF-8");
 		        
@@ -131,7 +131,10 @@ public class CartController {
 		        this.emailSender.send(message);
 				CartServiceImpl gh = (CartServiceImpl) session.getAttribute("gh");
 				List<CartModel> giohang = gh.ds;
-				cart.themHoaDondao(kh.getMaKH(),gh.TongTien());
+				if (pttt.equals("cod"))
+					pttt = "Thanh toán khi nhận hàng";
+				else pttt = "Chuyển khoản qua ATM";
+				cart.themHoaDondao(kh.getMaKH(),gh.TongTien(),pttt);
 				long maHD = cart.maHDVuaTao();
 				cart.themCTHD(giohang, maHD);
 				request.setAttribute("tb", "Đặt mua thành công");

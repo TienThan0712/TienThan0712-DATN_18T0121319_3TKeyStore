@@ -38,9 +38,9 @@ public class RegisterController {
 	private GoogleCapchaService capchaService;
 	
 	@PostMapping("/register")
-	public String Register(Model model,HttpServletRequest request,@Param("user") String user,@Param("pass") String pass,@Param("name") String name,
+	public String Register(Model model,HttpServletRequest request,@Param("pass") String pass,@Param("name") String name,
 			@Param("diachi") String diachi,@Param("sdt") String sdt,@Param("email") String email,@RequestParam(value = "g-recaptcha-response") String capChaResponse) {
-		if(user!=null)
+		if(email!=null)
 		{
 			if (!capchaService.verifyGoogleCapcha(capChaResponse)) {
 				request.setAttribute("tb", "Google Capcha Fail");
@@ -53,7 +53,7 @@ public class RegisterController {
 				return "client/index";
 			}
 			String password = BCrypt.hashpw(pass, BCrypt.gensalt());
-			int test = customer.ktdk(name, diachi, sdt, email, user, password);
+			int test = customer.ktdk(name, diachi, sdt, email,password);
 			if(test == -1)
 			{
 				model.addAttribute("tb","Tên tài khoản đã tồn tại");
@@ -89,11 +89,11 @@ public class RegisterController {
 		return "client/index";
 	}
 	@PostMapping("/registerCart")
-	public String RegisterCart(Model model,@Param("user") String user,@Param("pass") String pass,@Param("name") String name,
+	public String RegisterCart(Model model,@Param("pass") String pass,@Param("name") String name,
 			@Param("diachi") String diachi,@Param("sdt") String sdt,@Param("email") String email) {
-		if(user!=null)
+		if(email!=null)
 		{
-			int test = customer.ktdk(name, diachi, sdt, email, user, pass);
+			int test = customer.ktdk(name, diachi, sdt, email, pass);
 			if(test == -1)
 			{
 				model.addAttribute("tb","Tên tài khoản đã tồn tại");

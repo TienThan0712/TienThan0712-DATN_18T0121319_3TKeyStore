@@ -17,9 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ThanTrongTien_DATN.KeyBoardStore.Model.CategoryModel;
+import com.ThanTrongTien_DATN.KeyBoardStore.Model.CustomerModel;
+import com.ThanTrongTien_DATN.KeyBoardStore.Model.ProductCommentModel;
 import com.ThanTrongTien_DATN.KeyBoardStore.Model.ProductModel;
 import com.ThanTrongTien_DATN.KeyBoardStore.Model.SwitchModel;
 import com.ThanTrongTien_DATN.KeyBoardStore.Service.ICategoryService;
+import com.ThanTrongTien_DATN.KeyBoardStore.Service.IProductCommentService;
 import com.ThanTrongTien_DATN.KeyBoardStore.Service.IProductService;
 import com.ThanTrongTien_DATN.KeyBoardStore.Service.ISwitchService;
 
@@ -34,6 +37,9 @@ public class ProductController {
 	
 	@Autowired
 	private ISwitchService<SwitchModel> switchs;
+	
+	@Autowired
+	private IProductCommentService<ProductCommentModel> productComment;
 	
 	@GetMapping("/productNew")
 	public String productNew(Model model) throws Exception {
@@ -189,9 +195,30 @@ public class ProductController {
 		List<CategoryModel> dsloai = category.getLoai();
 		ProductModel sp = product.get1sp(masp);
 		List<ProductModel> dssp = product.getCategory(sp.getMaLoai());
+		List<ProductCommentModel> dscomment = productComment.getCommentProduct(masp);
+		model.addAttribute("dscomment",dscomment);
 		model.addAttribute("sp", sp);
 		model.addAttribute("dsloai", dsloai);
 		model.addAttribute("dssp", dssp);
 		return "client/productDetail";
 	};
+	
+	@PostMapping("/productComment")
+	public String productComment (HttpServletRequest request, Model model, @Param("masp") String masp, @Param("comment") String comment) {
+		HttpSession session = request.getSession();
+		CustomerModel kh = (CustomerModel) session.getAttribute("kh");
+		System.out.print(kh.toString());
+		System.out.print(productComment.addComment(masp, kh.getMaKH(), comment));
+		productComment.addComment(masp, kh.getMaKH(), comment);
+		productComment.deletecache();
+		List<ProductCommentModel> dscomment = productComment.getCommentProduct(masp);
+		List<CategoryModel> dsloai = category.getLoai();
+		ProductModel sp = product.get1sp(masp);
+		List<ProductModel> dssp = product.getCategory(sp.getMaLoai());
+		model.addAttribute("dscomment",dscomment);
+		model.addAttribute("sp", sp);
+		model.addAttribute("dsloai", dsloai);
+		model.addAttribute("dssp", dssp);
+		return "client/productDetail";
+	}
 }

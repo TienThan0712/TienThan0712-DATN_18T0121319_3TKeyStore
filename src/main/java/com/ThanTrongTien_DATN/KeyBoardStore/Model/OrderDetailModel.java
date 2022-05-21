@@ -3,6 +3,7 @@ package com.ThanTrongTien_DATN.KeyBoardStore.Model;
 public class OrderDetailModel {
 	private Long CTHD;
 	private Long MaHD;
+	private String MaSP;
 	private String TenSP;
 	private Integer SoLuong;
 	private Long ThanhTien;
@@ -10,10 +11,11 @@ public class OrderDetailModel {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public OrderDetailModel(Long cTHD, Long maHD, String tenSP, Integer soLuong, Long thanhTien) {
+	public OrderDetailModel(Long cTHD, Long maHD, String maSP, String tenSP, Integer soLuong, Long thanhTien) {
 		super();
 		CTHD = cTHD;
 		MaHD = maHD;
+		MaSP = maSP;
 		TenSP = tenSP;
 		SoLuong = soLuong;
 		ThanhTien = thanhTien;
@@ -29,6 +31,12 @@ public class OrderDetailModel {
 	}
 	public void setMaHD(Long maHD) {
 		MaHD = maHD;
+	}
+	public String getMaSP() {
+		return MaSP;
+	}
+	public void setMaSP(String maSP) {
+		MaSP = maSP;
 	}
 	public String getTenSP() {
 		return TenSP;
@@ -48,4 +56,5 @@ public class OrderDetailModel {
 	public void setThanhTien(Long thanhTien) {
 		ThanhTien = thanhTien;
 	}
+	
 }

@@ -26,7 +26,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService<OrderDetailMo
 	
 	@Override
 	public List<OrderDetailModel> getCTDH(long mahd) {
-		String sql = "select hd.MaHD,cthd.MaCTHD , sp.TenSP, cthd.SoLuong, cthd.SoLuong * (sp.DonGia-(sp.DonGia*(sp.GiamGia/100.0))) as ThanhTien\r\n"
+		String sql = "select hd.MaHD,cthd.MaCTHD ,cthd.MaSP ,sp.TenSP, cthd.SoLuong, cthd.SoLuong * (sp.DonGia-(sp.DonGia*(sp.GiamGia/100.0))) as ThanhTien\r\n"
 				+ "from HoaDon as hd inner join ChiTietHoaDon as cthd on hd.MaHD=cthd.MaHD\r\n"
 				+ "	inner join SanPham as sp on sp.MaSP=cthd.MaSP\r\n"
 				+ "where hd.MaHD="+mahd;
@@ -36,6 +36,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService<OrderDetailMo
 				OrderDetailModel ctdh = new OrderDetailModel();
 				ctdh.setMaHD(rs.getLong("MaHD"));
 				ctdh.setCTHD( rs.getLong("MaCTHD"));
+				ctdh.setMaSP(rs.getString("MaSP"));			
 				ctdh.setTenSP(rs.getString("TenSP"));
 				ctdh.setSoLuong(rs.getInt("SoLuong"));
 				ctdh.setThanhTien( rs.getLong("ThanhTien"));

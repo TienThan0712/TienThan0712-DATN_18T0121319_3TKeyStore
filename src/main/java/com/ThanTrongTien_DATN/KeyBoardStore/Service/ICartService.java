@@ -17,9 +17,9 @@ public interface ICartService<T> {
 
 	public void XoaALL();
 
-	public int themHoaDondao(Long makh,Long total);
+	public int themHoaDondao(Long makh,Long total,String PTTT);
 
-	public int themCTHDdao(String masp, long soluong, long mahd,long thanhtien);
+	public int themCTHDdao(long mahd, String masp, long soluong,  long thanhtien);
 
 	public void themCTHD(List<CartModel> dsgiohang, long maHD);
 

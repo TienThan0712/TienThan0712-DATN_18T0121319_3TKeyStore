@@ -58,6 +58,7 @@
 											<th class="center">Số ĐT</th>
 											<th class="center">Tổng tiền</th>
 											<th class="center">Ngày mua</th>
+											<th class="center">Phuơng thức thanh toán</th>
 											<th class="center">Chi tiết</th>
 											<th class="center">Trạng thái</th>
 										</tr>
@@ -71,6 +72,7 @@
 												<td class="center"><fmt:formatNumber type="NUMBER"
 														value="${s.getTongTien()}" />đ</td>
 												<td class="center">${s.getNgayMua()}</td>
+												<td>${s.getPTTT() }</td>
 												<td class="center"><a
 													href="/admin/orderDetail?mahd=${s.getMaHD()}&name=btnChiTiet">
 														Chi tiết</a></td>

@@ -58,7 +58,7 @@
 											<th class="center">Số điện thoại</th>
 											<th class="center">Email</th>
 											<th class="center">UserName</th>
-											<th class="center">Password</th>
+											<th class="center">Trạng Thái</th>
 											<th class="center">Hành động</th>
 										</tr>
 									</thead>
@@ -72,10 +72,19 @@
 													<td class="center">${s.getSoDT()}</td>
 													<td class="center">${s.getEmail()}</td>
 													<td class="center">${s.getUserName()}</td>
-													<td class="center">${s.getPass()}</td>
-													<td class="center"><a
-														href="/admin/customer?makh=${s.getMaKH()}&name=btnXoa">Xóa</a>
-													</td>
+													<c:if test="${s.getTrangThai() == 1 }">
+														<td class="center">Active </td>
+														<td class="center">
+															<a href="/admin/customer?makh=${s.getMaKH()}&name=btnBlock">Block</a>
+														</td>
+													</c:if>
+													<c:if test="${s.getTrangThai() == 0 }">
+														<td class="center">Block </td>
+														<td class="center">
+															<a href="/admin/customer?makh=${s.getMaKH()}&name=btnActive">Active</a>
+														</td>
+													</c:if>
+													
 												</tr>
 											</form>
 										</c:forEach>

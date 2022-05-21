@@ -73,6 +73,9 @@
 				<li><a href="/admin/customer"
 					class="${link == 'customer' ? 'active-menu' : '' } waves-effect waves-dark"><i
 						class="fa fa-table"></i> Danh sách khách hàng</a></li>
+				<li><a href="/admin/productComment"
+					class="${link == 'productComment' ? 'active-menu' : '' } waves-effect waves-dark"><i
+						class="fa fa-table"></i> Quản lý đánh giá</a></li>
 				<li><a href="#"
 					class="${link == 'order' ? 'active-menu' : '' } waves-effect waves-dark"><i
 						class="fa fa-table

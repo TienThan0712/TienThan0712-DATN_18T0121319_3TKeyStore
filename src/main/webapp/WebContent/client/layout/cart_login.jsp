@@ -47,8 +47,8 @@
 							<form id="form-signin-cart" class="form-signin mt-2"
 								action="/home/loginCart" method="post">
 								<div class="form-label-group">
-									<input type="text" id="inputEmail" class="form-control"
-										placeholder="Nhập địa chỉ email" name="user" required
+									<input type="email" id="inputEmail" class="form-control"
+										placeholder="Nhập địa chỉ email" name="email" required
 										autofocus>
 								</div>
 								<div class="form-label-group">

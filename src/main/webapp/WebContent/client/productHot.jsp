@@ -43,11 +43,8 @@
 	src="<c:url value='/slick/slick.min.js'/>"></script>
 <script type="text/javascript"
 	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
-<link rel="canonical" href="http://dealbook.xyz/">
 <meta name="google-site-verification"
 	content="urDZLDaX8wQZ_-x8ztGIyHqwUQh2KRHvH9FhfoGtiEw" />
-<link rel="manifest"
-	href="<c:url value='/favicon_io/site.webmanifest'/>">
 </head>
 
 <body>
@@ -102,8 +99,8 @@
 	<!-- ảnh banner -->
 	<section class="banner">
 		<div class="container">
-			<a href="sach-moi-tuyen-chon.html"><img
-				src="images/sach-moi-full-banner.jpg" alt="sach-moi-full-banner"
+			<a href="#"><img
+				src="https://newmen.vn/wp-content/uploads/2021/03/Banner_Newmen-1.jpg"
 				class="img-fluid"></a>
 		</div>
 	</section>

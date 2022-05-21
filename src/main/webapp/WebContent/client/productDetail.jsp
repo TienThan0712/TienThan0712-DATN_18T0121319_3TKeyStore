@@ -42,11 +42,8 @@
 	src="<c:url value='/slick/slick.min.js'/>"></script>
 <script type="text/javascript"
 	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
-<link rel="canonical" href="http://dealbook.xyz/">
 <meta name="google-site-verification"
 	content="urDZLDaX8wQZ_-x8ztGIyHqwUQh2KRHvH9FhfoGtiEw" />
-<link rel="manifest"
-	href="<c:url value='/favicon_io/site.webmanifest'/>">
 </head>
 
 <body>
@@ -76,7 +73,8 @@
 				<div class="col-md-5 ml-auto contact d-none d-md-block">
 					<div class="benphai float-right">
 						<div class="hotline">
-							<i class="fa fa-phone"></i> <span>Hotline:<b>038 584 2033</b>
+							<i class="fa fa-phone"></i> <span>Hotline:<b>038 584
+									2033</b>
 							</span>
 						</div>
 						<i class="fas fa-comments-dollar"></i> <a href="#">Hỗ trợ trực
@@ -167,6 +165,14 @@
 								<a class="huongdanmuahang text-decoration-none" href="#">(Vui
 									lòng xem hướng dẫn mua hàng)</a>
 							</div>
+							<div class="col-md-5">
+								<div class="thongtinsp">
+									<ul>
+										<li>Thương hiệu: <a href="/home/product?ml=${sp.getMaLoai()}" class="thuonghieu">${sp.getTenLoai()}</a></li>
+										<li>Loại Switch: <b>${sp.getTenSwitch()}</b></li>
+									</ul>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="product-description col-md-9">
@@ -192,69 +198,58 @@
 							</div>
 							<div class="tab-pane fade " id="nav-danhgia" role="tabpanel"
 								aria-labelledby="nav-danhgia-tab">
-								<div class="row">
-									<div class="col-md-3 text-center">
-										<p class="tieude">Đánh giá trung bình</p>
-										<div class="diem">0/5</div>
-										<div class="sao">
-											<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-												class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-												class="fa fa-star"></i>
-										</div>
-										<p class="sonhanxet text-muted">(0 nhận xét)</p>
-									</div>
-									<div class="col-md-5">
-										<div class="tiledanhgia text-center">
-											<div class=" align-items-center">
-												<div class="danhgia">
-													<ul class="d-flex" style="list-style: none;">
-														<li class="active"><i class="fa fa-star"></i></li>
-														<li class="active"><i class="fa fa-star"></i></li>
-														<li class="active"><i class="fa fa-star"></i></li>
-														<li class="active"><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star"></i></li>
-													</ul>
-												</div>
-												<div class="form-group">
-													<div class="tennguoidung">
-														<h6>KH1</h6>										
+								<div class="comments-area">
+									<c:if test="${dscomment !=null }">
+										<c:forEach items="${dscomment}" var="s">
+											<div class="comment-list">
+												<div class="single-comment justify-content-between d-flex">
+													<div class="user justify-content-between d-flex">
+														<div class="desc">
+															<div class="d-flex justify-content-between">
+																<div class="d-flex align-items-center">
+																	<h5>
+																		<strong>${s.getHoTen() }</strong>
+																	</h5>
+																	<p class="date">${s.getNgayThem() }</p>
+
+																</div>
+															</div>
+															<p class="comment">${s.getNoiDung() }</p>
+														</div>
 													</div>
-													<input type="text" style="width: 100px; height: 50px" value="Sản phẩm dùng tốt" readonly="readonly">
 												</div>
 											</div>
-											<div class="btn vietdanhgia mt-3">Viết đánh giá của bạn</div>
-										</div>
-										<div class="formdanhgia">
-											<h6 class="tieude text-uppercase">GỬI ĐÁNH GIÁ CỦA BẠN</h6>
-											<span class="danhgiacuaban">Đánh giá của bạn về sản
-												phẩm này:</span>
-											<form action="/home" method="get">
-												<div class="rating d-flex flex-row-reverse align-items-center justify-content-end">
-													<input type="radio" name="star" id="star1">
-														<label for="star1"></label> 
-													<input type="radio" name="star" id="star2">
-														<label for="star2"></label> 
-													<input type="radio" name="star" id="star3">
-														<label for="star3"></label> 
-													<input type="radio" name="star" id="star4">
-														<label for="star4"></label> 
-													<input type="radio" name="star" id="star5">
-														<label for="star5"></label>
+										</c:forEach>
+									</c:if>
+									<div class="comment-form">
+										<h4>Viết đánh giá của bạn</h4>
+										<form class="form-contact comment_form"
+											action="/home/productComment" method="post">
+											<div class="row">
+												<div class="col-12">
+													<div class="form-group">
+														<input type="hidden" name="masp" value="${sp.getMaSP()}">
+														<textarea class="form-control w-100" name="comment"
+															id="comment" cols="30" rows="9"
+															placeholder="Viết đánh giá của bạn" required></textarea>
+													</div>
 												</div>
-												<div class="form-group">
-													<input type="text" class="txtFullname w-100" name="user"placeholder="Mời bạn nhập tên(Bắt buộc)">
-												</div>
-												<div class="form-group">
-													<input type="text" class="txtEmail w-100" name="email" placeholder="Mời bạn nhập email(Bắt buộc)">
-												</div>
-												<div class="form-group">
-													<input type="text" class="txtComment w-100" name="noidung" placeholder="Đánh giá của bạn về sản phẩm này">
-												</div>
-												<div class="btn nutguibl">
-													<button type="submit">Gửi bình luận</button>
-												</div>
-											</form>
-										</div>
+											</div>
+											<c:choose>
+												<c:when test="${sessionScope.kh!=null }">
+													<button type="submit"
+														class="btn btn-warning btn-sm text-white">Gửi
+														đánh giá</button>
+												</c:when>
+												<c:otherwise>
+													<button type="submit"
+														class="btn btn-warning btn-sm text-white"
+														disabled="disabled">Gửi đánh giá</button>
+													<h5>(Vui lòng đăng nhập)</h5>
+												</c:otherwise>
+											</c:choose>
+											<div class="form-group"></div>
+										</form>
 									</div>
 								</div>
 							</div>
@@ -289,8 +284,9 @@
 								class="card-img-top anh" src="/${s.getAnhSP()}" alt="#">
 								<div class="card-body noidungsp mt-3">
 									<h7 class="card-title ten">${s.getTenSP()}</h7>
-									<small class="thuonghieu text-muted">Thương hiệu: ${s.getTenLoai()}</small>
-									<small class="thuonghieu text-muted">Loại Switch: ${s.getTenSwitch()}</small>
+									<small class="thuonghieu text-muted">Thương hiệu:
+										${s.getTenLoai()}</small> <small class="thuonghieu text-muted">Loại
+										Switch: ${s.getTenSwitch()}</small>
 									<div class="gia d-flex align-items-baseline">
 										<div class="giamoi">
 											<fmt:formatNumber type="NUMBER" value="${s.getGiaSale()}" />

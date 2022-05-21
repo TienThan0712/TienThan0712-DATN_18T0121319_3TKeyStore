@@ -10,7 +10,7 @@ public interface ICustomerService<T> {
 	
 	public boolean isisAccountExists(String tendn);
 
-	public int ktdk(String hoten, String diachi, String sodt, String email, String tendn, String mk);
+	public int ktdk(String hoten, String diachi, String sodt, String email, String mk);
 
 	public int SuaThongTin(long makh, String hoten, String diachi, String sodt, String email);
 
@@ -20,9 +20,13 @@ public interface ICustomerService<T> {
 
 	public List<CustomerModel> getKH();
 
-	public int Xoa(long makh);
+	public int Block(long makh);
+	
+	public int Active(long makh);
 
-	public int ResetPassword(String user, String Email);
+	public int ResetPassword(String Email);
 
-	public int CheckUser(String user, String Email);
+	public int CheckUser(String Email);
+
+	
 }

@@ -38,10 +38,8 @@
 <script type="text/javascript" src="/slick/slick.min.js"></script>
 <script type="text/javascript"
 	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
-<link rel="canonical" href="http://dealbook.xyz/">
 <meta name="google-site-verification"
 	content="urDZLDaX8wQZ_-x8ztGIyHqwUQh2KRHvH9FhfoGtiEw" />
-<link rel="manifest" href="/favicon_io/site.webmanifest">
 </head>
 </head>
 <body>

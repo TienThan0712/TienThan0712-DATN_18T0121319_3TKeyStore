@@ -63,6 +63,7 @@ public class AdminOrderController {
 				if(name.equals("btnHuyDon"))
 				{
 					order.HuyDon(Long.parseLong(mahd));
+					OrderModel dh = order.getDonHang(Long.parseLong(mahd));
 					dsdh = order.DonHangChoXN();
 					MimeMessage message = emailSender.createMimeMessage();
 					message.setContent(message, "text/plain; charset=UTF-8");
@@ -73,7 +74,7 @@ public class AdminOrderController {
 							+ "    <h4>----THANK YOU----</h4>\r\n";
 					message.setContent(html, "text/html; charset=UTF-8");
 			        
-			        helper.setTo("thanlong776@gmail.com");
+			        helper.setTo(dh.getEmail());
 			        
 			        helper.setSubject("ĐƠN HÀNG ĐÃ ĐƯỢC HỦY");
 
@@ -110,18 +111,33 @@ public class AdminOrderController {
 								+ "        </tr>\r\n" ;
 						html +=html1;
 					}
-					html += "    </table>\r\n"
-							+ "    <h4>Họ tên khách hàng: "+dh.getHoTen()+"</h4>\r\n"
-							+ "    <h4>Ngày mua: "+dh.getNgayMua()+"</h4>\r\n"
-							+ "    <h4>Tổng số tiền: "+en.format(dh.getTongTien())+" đ</h4>\r\n"
-							+ "    <h4>Thông tin chuyển khoản: 123456789</h4>\r\n"
-							+ "    <h4>Ngân hàng: VietinBank chi nhánh Huế</h4>\r\n"
-							+ "    <h4>Nội dung chuyển khoản: [Mã hóa đơn] + [Họ tên khách hàng]</h4>\r\n"
-							+ "    <h4>Đơn hàng sẽ được giao đến bạn trong 5-7 ngày</h4>\r\n"
-							+ "    <h4>-----THANK YOU-----</h4>";
+					if (dh.getPTTT().equals("Thanh toán khi nhận hàng"))
+					{
+						html += "    </table>\r\n"
+								+ "    <h4>Họ tên khách hàng: "+dh.getHoTen()+"</h4>\r\n"
+								+ "    <h4>Ngày mua: "+dh.getNgayMua()+"</h4>\r\n"
+								+ "    <h4>Tổng số tiền: "+en.format(dh.getTongTien())+" đ</h4>\r\n"
+								+ "    <h4>Phương thức thanh toán: Thanh toán khi nhận hàng </h4>\r\n"
+								+ "    <h4>Đơn hàng sẽ được giao đến bạn trong 5-7 ngày</h4>\r\n"
+								+ "    <h4>-----THANK YOU-----</h4>";
+					}
+					
+					else 
+					{
+						html += "    </table>\r\n"
+								+ "    <h4>Họ tên khách hàng: "+dh.getHoTen()+"</h4>\r\n"
+								+ "    <h4>Ngày mua: "+dh.getNgayMua()+"</h4>\r\n"
+								+ "    <h4>Tổng số tiền: "+en.format(dh.getTongTien())+" đ</h4>\r\n"
+								+ "    <h4>Phương thức thanh toán: Chuyển khoản qua ATM </h4>\r\n"
+								+ "    <h4>Thông tin chuyển khoản: 123456789</h4>\r\n"
+								+ "    <h4>Ngân hàng: VietinBank chi nhánh Huế</h4>\r\n"
+								+ "    <h4>Nội dung chuyển khoản: [Mã hóa đơn] + [Họ tên khách hàng]</h4>\r\n"
+								+ "    <h4>Đơn hàng sẽ được giao đến bạn trong 5-7 ngày</h4>\r\n"
+								+ "    <h4>-----THANK YOU-----</h4>";
+					}
 					message.setContent(html, "text/html; charset=UTF-8");
 			        
-			        helper.setTo("thanlong776@gmail.com");
+			        helper.setTo(dh.getEmail());
 			        
 			        helper.setSubject("ĐƠN HÀNG ĐÃ ĐƯỢC XÁC NHẬN");
 
@@ -171,16 +187,33 @@ public class AdminOrderController {
 					MimeMessage message = emailSender.createMimeMessage();
 					message.setContent(message, "text/plain; charset=UTF-8");
 					MimeMessageHelper helper = new MimeMessageHelper(message,"UTF-8");
-					String html=" <h4>Đơn hàng của bạn đã được thanh toán</h4>\r\n"
-							+ "    <h4>Thông tin đơn hàng mã: "+dh.getMaHD()+"</h4>\r\n"
-							+ "    <h4>Họ tên khách hàng: "+dh.getHoTen()+"</h4>\r\n"
-							+ "    <h4>Ngày mua: "+dh.getNgayMua()+"</h4>\r\n"
-							+ "    <h4>Tổng số tiền: "+en.format(dh.getTongTien())+" đ</h4>\r\n"
-							+ "    <h4>Đơn hàng sẽ được giao đến bạn trong 5-7 ngày</h4>\r\n"
-							+ "    <h4>-----THANK YOU-----</h4>";
+					String html = "";
+					if (dh.getPTTT().equals("Thanh toán khi nhận hàng"))
+					{
+						html =" <h4>Đơn hàng của bạn đã được thanh toán</h4>\r\n"
+								+ "    <h4>Thông tin đơn hàng mã: "+dh.getMaHD()+"</h4>\r\n"
+								+ "    <h4>Họ tên khách hàng: "+dh.getHoTen()+"</h4>\r\n"
+								+ "    <h4>Ngày mua: "+dh.getNgayMua()+"</h4>\r\n"
+								+ "    <h4>Tổng số tiền: "+en.format(dh.getTongTien())+" đ</h4>\r\n"
+								+ "    <h4>Phương thức thanh toán: Thanh toán khi nhận hàng </h4>\r\n"
+								+ "    <h4>Vui lòng xác nhận đã nhận được hàng</h4>\r\n"
+								+ "    <h4>-----THANK YOU-----</h4>";
+					}
+					else
+					{
+						html =" <h4>Đơn hàng của bạn đã được thanh toán</h4>\r\n"
+								+ "    <h4>Thông tin đơn hàng mã: "+dh.getMaHD()+"</h4>\r\n"
+								+ "    <h4>Họ tên khách hàng: "+dh.getHoTen()+"</h4>\r\n"
+								+ "    <h4>Ngày mua: "+dh.getNgayMua()+"</h4>\r\n"
+								+ "    <h4>Tổng số tiền: "+en.format(dh.getTongTien())+" đ</h4>\r\n"
+								+ "    <h4>Phương thức thanh toán: Chuyển khoản qua ATM </h4>\r\n"
+								+ "    <h4>Đơn hàng sẽ được giao đến bạn trong 5-7 ngày</h4>\r\n"
+								+ "    <h4>Vui lòng xác nhận khi nhận được hàng</h4>\r\n"
+								+ "    <h4>-----THANK YOU-----</h4>";
+					}
 					message.setContent(html, "text/html; charset=UTF-8");
 			        
-			        helper.setTo("thanlong776@gmail.com");
+			        helper.setTo(dh.getEmail());
 			        
 			        helper.setSubject("ĐƠN HÀNG ĐÃ ĐƯỢC THANH TOÁN");
 

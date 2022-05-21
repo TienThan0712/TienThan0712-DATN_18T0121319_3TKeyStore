@@ -92,21 +92,87 @@ $(function () {
         $("ul.tabs .tab-dangky").removeClass("active");
     });
 
-    // thumb-img
-    $(".thumb-img.thumb1").addClass('vienvang');
-    $('.thumb-img').click(function (e) {
-        $('.product-image').attr('src', this.src);
+	$("#form-signin").validate({
+        rules: {
+            pass: {
+                required: true,
+                minlength: 1
+            },
+            email: {
+                required: true,
+                email: true
+            }
+        },
+        messages: {
+            pass: {
+                required: 'Vui lòng nhập mật khẩu',
+                minlength: 'Vui lòng nhập ít nhất 6 kí tự'
+            },
+            email: {
+                required: "Vui lòng nhập email",
+                minlength: "Email không hợp lệ",
+                email: "Vui lòng nhập email",
+            }
+        }
     });
-
-    $('.thumb-img').click(function (e) {
-        $('.thumb-img:not(:hover)').removeClass('vienvang');
-        $(this).addClass('vienvang');
-    });
-
-    //btn-spin
-    $(".btn-inc").click(function (e) {
-        var strval = $(this).parent().prev().val();
-        var val = parseInt(strval) + 1;
+    
+    $("#form-signup").validate({
+		rules: {
+			user: {
+				required: true,
+			},
+			name: {
+				required: true,
+			},
+			sdt: {
+				required: true,
+				minlength: 8
+			},
+			pass: {
+				required: true,
+				minlength: 1
+			},
+			confirm_password: {
+				required: true,
+				minlength: 1,
+				equalTo: "#InputPassword"
+			},
+			email: {
+				required: true,
+				email: true
+			}
+		},
+		messages: {
+			user: {
+				required: "Vui lòng nhập tên đăng nhập",
+			},
+			name: {
+				required: "Vui lòng nhập họ và tên",
+			},
+			sdt: {
+				required: "Vui lòng nhập số điện thoại",
+				minlength: "Số máy quý khách vừa nhập là số không có thực"
+			},
+			pass: {
+				required: 'Vui lòng nhập mật khẩu',
+				minlength: 'Vui lòng nhập ít nhất 6 kí tự'
+			},
+			confirm_password: {
+				required: 'Vui lòng nhập lại mật khẩu',
+				minlength: 'Vui lòng nhập ít nhất 6 kí tự',
+				equalTo: 'Mật khẩu không trùng'
+			},
+			email: {
+				required: "Vui lòng nhập email",
+				minlength: "Email không hợp lệ",
+				email: "Vui lòng nhập email",
+			}
+		}
+	});
+	
+	$(".btn-inc").click(function (e) {
+      	var strval = $(this).parent().prev().val();
+       	var val = parseInt(strval) + 1;
         $(this).parent().prev().attr('value', val);
     });
     $(".btn-dec").click(function (e) {
@@ -118,16 +184,7 @@ $(function () {
             $(this).parent().next().attr('value', val);
         }
     });
-
-    // gui danh gia
-    $(".formdanhgia").hide(200);
-    $(".vietdanhgia").click(function (e) {
-        $(".formdanhgia").toggle(200);
-    });
-
-
-    
-
+	
     //rotate chevron
     $('#step1contentid').on('show.bs.collapse', function () {
         $(this).prev().addClass("active");
@@ -154,25 +211,5 @@ $(function () {
         $("#step1contentid").collapse('hide');
         $("#step2contentid").collapse('show');
     });
-
-    $('.items .row').isotope({
-        itemSelector:'.item',
-    })
-
-    $('.tag a').click(function (e) { 
-        var tacgia = $(this).data('tacgia');
-        
-        if(tacgia == 'all'){
-            $('.items .row').isotope({filter:'*'})
-        }else{
-            $('.items .row').isotope({filter:tacgia});
-        }
-        return false;
-    });
-
-    $('.thay-doi-mk').hide();
-    $("#changepass").click(function (e) { 
-        $('.thay-doi-mk').toggle(200);
-    });
-
+	
 });

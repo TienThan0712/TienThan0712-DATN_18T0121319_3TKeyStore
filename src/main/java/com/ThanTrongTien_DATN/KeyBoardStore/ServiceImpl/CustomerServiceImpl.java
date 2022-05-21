@@ -30,11 +30,11 @@ public class CustomerServiceImpl implements ICustomerService<CustomerModel>{
 	@Override
 	public CustomerModel ktdn(String tendn) {
 		CustomerModel kh = new CustomerModel();
-		String sql = "Select count(*) from KhachHang where UserName=? ";
+		String sql = "Select count(*) from KhachHang where Email=? ";
 		int count = jdbcTemplate.queryForObject(sql,new Object[] {tendn}, Integer.class);
 		if (count >= 1)
 		{
-			String query = "Select * from KhachHang where UserName=?";
+			String query = "Select * from KhachHang where Email=?";
 			kh =(CustomerModel) jdbcTemplate.queryForObject(query, new Object[] { tendn}, new BeanPropertyRowMapper<CustomerModel>(CustomerModel.class));
 			return kh;
 		}
@@ -44,7 +44,7 @@ public class CustomerServiceImpl implements ICustomerService<CustomerModel>{
 	@Override
 	@SuppressWarnings({ "unused", "deprecation" })
 	public boolean isisAccountExists(String tendn) {
-		String sql = "select count(*) from KhachHang where UserName=?";
+		String sql = "select count(*) from KhachHang where Email=?";
 		int count= jdbcTemplate.queryForObject(sql,new Object[] {tendn}, Integer.class);
 		if (count >= 1)
 		{
@@ -54,13 +54,13 @@ public class CustomerServiceImpl implements ICustomerService<CustomerModel>{
 	}
 
 	@Override
-	public int ktdk(String hoten, String diachi, String sodt, String email, String tendn, String mk) {
+	public int ktdk(String hoten, String diachi, String sodt, String email, String mk) {
 		
-		 if(isisAccountExists(tendn) == true) 
+		 if(isisAccountExists(email) == true) 
 		 { return -1; } 
-		 else if(isisAccountExists(tendn) == false) {
-			 return jdbcTemplate.update("insert into KhachHang (HoTen,DiaChi,SoDT,Email,UserName,Pass) values (?,?,?,?,?,?)",
-				hoten, diachi, sodt, email, tendn, mk);
+		 else if(isisAccountExists(email) == false) {
+			 return jdbcTemplate.update("insert into KhachHang (HoTen,DiaChi,SoDT,Email,Pass,TrangThai) values (?,?,?,?,?,1)",
+				hoten, diachi, sodt, email, mk);
 		 } else return 0;
 		 
 	}
@@ -108,6 +108,7 @@ public class CustomerServiceImpl implements ICustomerService<CustomerModel>{
 				kh.setEmail(rs.getString("Email"));
 				kh.setUserName(rs.getString("UserName"));
 				kh.setPass(rs.getString("Pass"));
+				kh.setTrangThai(rs.getInt("TrangThai"));
 				return kh;
 			}
 		});
@@ -115,22 +116,27 @@ public class CustomerServiceImpl implements ICustomerService<CustomerModel>{
 	}
 	
 	@Override
-	public int Xoa (long makh) {
-		return jdbcTemplate.update("Delete KhachHang where MaKH=?",makh);
+	public int Block (long makh) {
+		return jdbcTemplate.update("Update KhachHang set TrangThai=0 where MaKH=?",makh);
 	}
 	
 	@Override
-	public int CheckUser (String user, String Email) {
-		String sql = "select count(*) from KhachHang where UserName=? and Email=?";
+	public int Active (long makh) {
+		return jdbcTemplate.update("Update KhachHang set TrangThai=1 where MaKH=?",makh);
+	}
+	
+	@Override
+	public int CheckUser (String Email) {
+		String sql = "select count(*) from KhachHang where Email=?";
 		@SuppressWarnings("deprecation")
-		int count = jdbcTemplate.queryForObject(sql,new Object[] {user,Email}, Integer.class);
+		int count = jdbcTemplate.queryForObject(sql,new Object[] {Email}, Integer.class);
 		return count;
 	}
 	
 	@Override
-	public int ResetPassword (String user, String Email) {
+	public int ResetPassword (String Email) {
 		String password = BCrypt.hashpw("123456", BCrypt.gensalt(10));
 		System.out.print(password);
-		return jdbcTemplate.update("update KhachHang set Pass=N'"+password+"' where UserName=? and Email=?",user, Email);
+		return jdbcTemplate.update("update KhachHang set Pass=N'"+password+"' where Email=?", Email);
 	}
 }

@@ -31,9 +31,7 @@
     <script type="text/javascript" src="<c:url value='/slick/slick.min.js'/>"></script>
     <script type="text/javascript"
         src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
-    <link rel="canonical" href="http://dealbook.xyz/">
     <meta name="google-site-verification" content="urDZLDaX8wQZ_-x8ztGIyHqwUQh2KRHvH9FhfoGtiEw" />
-    <link rel="manifest" href="<c:url value='/favicon_io/site.webmanifest'/>">
 </head>
 <body>
 	<%
@@ -104,12 +102,6 @@
 							</div>
 							<form action="/home/resetPassword" method="post" >
 								<div class="thay-doi-mk">
-									<div class="mkcu my-3">
-										<div class="row">
-											<label class="col-md-2 offset-md-2" for="account-mkcu">Tên đăng nhâp</label> 
-											<input class="col-md-4" type="text" name="user" value="" placeholder="Nhập tên đăng nhập">
-										</div>
-									</div>
 									<div class="mkmoi my-3">
 										<div class="row">
 											<label class="col-md-2 offset-md-2" for="account-mkmoi">Email</label> 

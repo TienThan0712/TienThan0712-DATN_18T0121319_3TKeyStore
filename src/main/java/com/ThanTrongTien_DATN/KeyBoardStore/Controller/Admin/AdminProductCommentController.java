@@ -14,56 +14,48 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ThanTrongTien_DATN.KeyBoardStore.Model.AdminModel;
 import com.ThanTrongTien_DATN.KeyBoardStore.Model.CategoryModel;
-import com.ThanTrongTien_DATN.KeyBoardStore.Model.CustomerModel;
+import com.ThanTrongTien_DATN.KeyBoardStore.Model.ProductCommentModel;
 import com.ThanTrongTien_DATN.KeyBoardStore.Model.ProductModel;
 import com.ThanTrongTien_DATN.KeyBoardStore.Service.ICategoryService;
-import com.ThanTrongTien_DATN.KeyBoardStore.Service.ICustomerService;
+import com.ThanTrongTien_DATN.KeyBoardStore.Service.IProductCommentService;
 import com.ThanTrongTien_DATN.KeyBoardStore.Service.IProductService;
 
 @Controller
 @RequestMapping("/admin")
-public class AdminCustomerController {
-	
-	@Autowired
-	private ICustomerService<CustomerModel> customer;
-	
+public class AdminProductCommentController {
+
 	@Autowired
 	private ICategoryService<CategoryModel> category;
 	
 	@Autowired
 	private IProductService<ProductModel> products;
 	
-	@GetMapping("/customer")
-	public String CustomerView (HttpServletRequest request, Model model, @Param("makh") String makh, @Param("name") String name) {
+	@Autowired
+	private IProductCommentService<ProductCommentModel> productComment;
+	
+	@GetMapping("/productComment")
+	public String CommentView (HttpServletRequest request, Model model, @Param("maComment") String maComment, @Param("name") String name) {
 		HttpSession session = request.getSession();
 		AdminModel ad = (AdminModel)session.getAttribute("ad");
 		if (ad!=null)
 		{
-			List<CustomerModel> dskh = customer.getKH();
-			if(makh!=null)
+			List<ProductCommentModel> dsComment = productComment.getComment();
+			if(maComment!=null)
 			{
-				if(name.equals("btnBlock"))
+				if(name.equals("btnXoa"))
 				{
-					customer.Block(Long.parseLong(makh));
-					dskh = customer.getKH();
-					model.addAttribute("dskh",dskh);
+					productComment.Delete(Long.parseLong(maComment));
+					productComment.deletecache();
+					dsComment = productComment.getComment();
+					model.addAttribute("dsComment",dsComment);
 					model.addAttribute("tb", "Xóa thành công");
-					model.addAttribute("link", "customer");
-					return "admin/customer";
-				}
-				if(name.equals("btnActive"))
-				{
-					customer.Active(Long.parseLong(makh));
-					dskh = customer.getKH();
-					model.addAttribute("dskh",dskh);
-					model.addAttribute("tb", "Xóa thành công");
-					model.addAttribute("link", "customer");
-					return "admin/customer";
+					model.addAttribute("link", "productComment");
+					return "admin/productComment";
 				}
 			}
-			model.addAttribute("dskh",dskh);
-			model.addAttribute("link", "customer");
-			return "admin/customer";
+			model.addAttribute("dsComment",dsComment);
+			model.addAttribute("link", "productComment");
+			return "admin/productComment";
 		}
 		else
 		{
